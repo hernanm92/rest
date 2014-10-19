@@ -53,8 +53,6 @@ router.route('/categories')
 		
 	});
 
-// on routes that end in /bears/:bear_id
-// ----------------------------------------------------
 router.route('/categories/:category')
 	.get(function(req, res) {
 		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
@@ -81,6 +79,33 @@ router.route('/categories/:category')
 		    console.error(error);
 		  });
 	});
+
+router.route('/sites/:site')
+	.get(function(req, res) {
+		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
+
+		  var options = {
+		    headers: {
+		      accept: '*/*'
+		    },
+		    host: 'api.mercadolibre.com',
+		    port: 443,
+		    path: '/sites/' + req.params.category,
+		    method: 'GET'
+		  };
+
+		  var request = https.request(options, function(response) {
+		    console.log(response.statusCode);
+		    response.on('data', function(data) {
+		      res.send(JSON.parse(data));
+		    });
+		  });
+		  request.end();
+
+		  request.on('error', function(error) {
+		    console.error(error);
+		  });
+	});	
 
 
 // REGISTER OUR ROUTES -------------------------------
