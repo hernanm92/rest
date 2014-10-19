@@ -56,8 +56,8 @@ router.route('/categories')
 // ----------------------------------------------------
 router.route('/categories/:category')
 	.get(function(req, res) {
-		res.json({ message: 'GET to categories/:category'});
-		res.json({ parameter: req.params.category });
+		res.json({ message: 'GET to categories/:category',
+		           parameter: req.params.category });
 	});
 
 
