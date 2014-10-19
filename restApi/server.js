@@ -73,7 +73,7 @@ router.route('/categories/:category')
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
 		      res.writeHead(200, {"Content-Type": "text/html"});
-		      res.write('<code>BODY: ' + data + '</code>');
+		      res.write(data);
 		      res.end();
 		    });
 		  });
