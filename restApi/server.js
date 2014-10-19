@@ -46,7 +46,7 @@ router.route('/categories')
 		
 	})
 
-    // POST categories
+    // POST categories (s modo de ejemplo)
 	.post(function(req, res) {
 		
         res.json({ message: 'POST to categories' });
@@ -79,6 +79,33 @@ router.route('/categories/:category')
 		    console.error(error);
 		  });
 	});
+
+router.route('/sites')
+	.get(function(req, res) {
+		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
+
+		  var options = {
+		    headers: {
+		      accept: '*/*'
+		    },
+		    host: 'api.mercadolibre.com',
+		    port: 443,
+		    path: '/sites',
+		    method: 'GET'
+		  };
+
+		  var request = https.request(options, function(response) {
+		    console.log(response.statusCode);
+		    response.on('data', function(data) {
+		      res.send(JSON.parse(data));
+		    });
+		  });
+		  request.end();
+
+		  request.on('error', function(error) {
+		    console.error(error);
+		  });
+	});	
 
 router.route('/sites/:site')
 	.get(function(req, res) {
