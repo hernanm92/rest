@@ -34,9 +34,20 @@ router.get('/', function(req, res) {
 
 // more routes for our API will happen here
 
+// on routes that end in /bears
+// ----------------------------------------------------
+router.route('/categories')
+
+	// create a bear (accessed at POST http://localhost:8080/api/bears)
+	.get(function(req, res) {
+		
+        res.json({ message: 'Welcome to categories' });
+		
+	});
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/', router);
+app.use('/api', router);
 
 // START THE SERVER
 // =============================================================================
