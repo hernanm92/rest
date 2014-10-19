@@ -102,7 +102,7 @@ router.route('/:param1/:param2/:param3')
 		    },
 		    host: 'api.mercadolibre.com',
 		    port: 443,
-		    path: '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param2,
+		    path: '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3,
 		    method: 'GET'
 		  };
 
