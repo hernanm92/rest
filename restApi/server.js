@@ -2,6 +2,7 @@
 // ==============================================================================
 
 // call the packages we need
+var https      = require("https");
 var express    = require('express'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
@@ -56,8 +57,31 @@ router.route('/categories')
 // ----------------------------------------------------
 router.route('/categories/:category')
 	.get(function(req, res) {
-		res.json({ message: 'GET to categories/:category',
-		           parameter: req.params.category });
+		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
+
+		  var options = {
+		    headers: {
+		      accept: '*/*'
+		    },
+		    host: 'api.mercadolibre.com',
+		    port: 443,
+		    path: '/categories/' + req.params.category,
+		    method: 'GET'
+		  };
+
+		  var request = https.request(options, function(response) {
+		    console.log(response.statusCode);
+		    response.on('data', function(data) {
+		      res.writeHead(200, {"Content-Type": "text/html"});
+		      res.write('<code>BODY: ' + data + '</code>');
+		      res.end();
+		    });
+		  });
+		  request.end();
+
+		  request.on('error', function(error) {
+		    console.error(error);
+		  });
 	});
 
 
