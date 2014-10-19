@@ -52,6 +52,14 @@ router.route('/categories')
 		
 	});
 
+// on routes that end in /bears/:bear_id
+// ----------------------------------------------------
+router.route('/categories/:category')
+	.get(function(req, res) {
+		res.json({ message: 'GET to categories/:category' + req.params.category });
+	});
+
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
