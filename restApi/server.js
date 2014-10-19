@@ -38,10 +38,16 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/categories')
 
-	// create a bear (accessed at POST http://localhost:8080/api/bears)
+	// GET categories
 	.get(function(req, res) {
 		
-        res.json({ message: 'Welcome to categories' });
+        res.json({ message: 'GET to categories' });
+		
+	});
+
+	.post(function(req, res) {
+		
+        res.json({ message: 'POST to categories' });
 		
 	});
 
