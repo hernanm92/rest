@@ -38,19 +38,20 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/categories')
 
-    //POST categories
+	// GET categories
+	.get(function(req, res) {
+		
+        res.json({ message: 'GET to categories' });
+		
+	})
+
+    // POST categories
 	.post(function(req, res) {
 		
         res.json({ message: 'POST to categories' });
 		
 	});
 
-	// GET categories
-	.get(function(req, res) {
-		
-        res.json({ message: 'GET to categories' });
-		
-	});
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
