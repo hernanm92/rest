@@ -90,7 +90,7 @@ router.route('/sites/:site')
 		    },
 		    host: 'api.mercadolibre.com',
 		    port: 443,
-		    path: '/sites/' + req.params.category,
+		    path: '/sites/' + req.params.site,
 		    method: 'GET'
 		  };
 
