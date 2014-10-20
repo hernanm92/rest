@@ -6,6 +6,8 @@ var https      = require("https");
 var express    = require('express'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
+var redis      = require("redis");
+var client     = redis.createClient();
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
@@ -20,7 +22,7 @@ var router = express.Router(); 				// get an instance of the express Router
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
-	// do logging
+	//guardo y checkeo en la base de datos
 	console.log('Something is happening.');
 	next(); // make sure we go to the next routes and don't stop here
 });
