@@ -8,7 +8,7 @@ var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
 var session = require('express-session') , RedisStore = require('connect-redis')(session);
 
-app.use(session({ store: new RedisStore({ host: '54.187.13.183', port: 8080, client: redis }), secret: 'hernanm992' }))
+app.use(session({ store: new RedisStore({ host: '54.187.13.183', port: 8080, client: session }), secret: 'hernanm992' }))
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
