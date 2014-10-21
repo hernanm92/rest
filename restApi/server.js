@@ -33,6 +33,8 @@ var router = express.Router(); 				// get an instance of the express Router
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
+	console.log(getRequestIP(request));
+	console.log(url.parse(request.url));
 	// Set a value
     client.set("string key", "Hello World", function (err, reply) {
         console.log(reply.toString());
