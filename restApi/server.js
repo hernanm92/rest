@@ -3,42 +3,21 @@
 
 // call the packages we need
 var https      = require("https");
-var express    = require('express-session'); 		// call express
+var express    = require('express'); 		// call express
+var session = require('express-session');
+var client = redis.createClient();
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
-//var session = require('express-session') , RedisStore = require('connect-redis')(session);
-app.use(loopback.session({
-  secret: 'hernanm992',
-  resave: true,
-  saveUninitialized: true
-}));
-
-var RedisStore = require('connect-redis')(express);
-app.use(express.session({ secret: "keyboard cat", store: new RedisStore }));
 
 
-//app.use(session({ store: new RedisStore({ host: '54.187.13.183', port: 8080, client: session }), secret: 'hernanm992' }))
-/*
-var redis = require("redis")
-    , client = redis.createClient('127.0.0.1', 6379);
- 
-client.on("error", function (err) {
-    console.log("Error " + err);
-});
- 
-client.on("connect", runSample);
- 
-function runSample() {
-    // Set a value
-    client.set("string key", "Hello World", function (err, reply) {
-        console.log(reply.toString());
-    });
-    // Get a value
-    client.get("string key", function (err, reply) {
-        console.log(reply.toString());
-    });
-}
-*/
+app.use(session(
+	{
+		secret: 'hernanm992', 
+		store: new redisStore({ host: 'localhost', port: 6379, client: client }),
+		saveUninitialized: false, // don't create session until something stored,
+		resave: false // don't save session if unmodified
+	}
+));
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
