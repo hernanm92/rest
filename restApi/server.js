@@ -34,14 +34,16 @@ var router = express.Router(); 				// get an instance of the express Router
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
-	console.log(getRequestIP(req));
-	console.log(url.parse(req.url).pathname);
+	var ip = getRequestIP(req);
+	var url =url.parse(req.url).pathname;
+	console.log(ip);
+	console.log(url);
 	// Set a value
-    client.set("string key", "Hello World", function (err, reply) {
+    client.set(ip, url, function (err, reply) {
         console.log(reply.toString());
     });
     // Get a value
-    client.get("string key", function (err, reply) {
+    client.get(ip, function (err, reply) {
         console.log(reply.toString());
     });
 
