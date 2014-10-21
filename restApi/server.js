@@ -4,6 +4,7 @@
 // call the packages we need
 var https      = require("https");
 var express    = require('express'); 		// call express
+var redis = require('redis');
 var session = require('express-session');
 var client = redis.createClient();
 var app        = express(); 				// define our app using express
