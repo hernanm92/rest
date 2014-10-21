@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 //app.use(session({ store: new RedisStore({ host: '54.187.13.183', port: 8080, client: session }), secret: 'hernanm992' }))
 
 var redis = require("redis")
-    , client = redis.createClient('54.187.13.183', 8080);
+    , client = redis.createClient('54.187.13.183', 6379);
  
 client.on("error", function (err) {
     console.log("Error " + err);
