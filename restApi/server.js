@@ -3,7 +3,7 @@
 
 // call the packages we need
 var https      = require("https");
-var express    = require('express'); 		// call express
+var express    = require('express-session'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
 //var session = require('express-session') , RedisStore = require('connect-redis')(session);
