@@ -35,7 +35,7 @@ var router = express.Router(); 				// get an instance of the express Router
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
 	console.log(getRequestIP(req));
-	console.log(url.parse(req.url));
+	console.log(url.parse(req.url).pathname);
 	// Set a value
     client.set("string key", "Hello World", function (err, reply) {
         console.log(reply.toString());
