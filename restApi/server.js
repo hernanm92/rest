@@ -7,6 +7,12 @@ var express    = require('express-session'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
 //var session = require('express-session') , RedisStore = require('connect-redis')(session);
+app.use(loopback.session({
+  secret: 'hernanm992',
+  resave: true,
+  saveUninitialized: true
+}));
+
 var RedisStore = require('connect-redis')(express);
 app.use(express.session({ secret: "keyboard cat", store: new RedisStore }));
 
