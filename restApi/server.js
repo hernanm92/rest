@@ -11,7 +11,6 @@ var bodyParser = require('body-parser');
 var client     = redis.createClient();
 var app        = express(); 				// define our app using express
 
-
 app.use(session(
 	{
 		secret: 'hernanm992', 
@@ -34,6 +33,15 @@ var router = express.Router(); 				// get an instance of the express Router
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
+	// Set a value
+    client.set("string key", "Hello World", function (err, reply) {
+        console.log(reply.toString());
+    });
+    // Get a value
+    client.get("string key", function (err, reply) {
+        console.log(reply.toString());
+    });
+
 	console.log('Something is happening.');
 	next(); // make sure we go to the next routes and don't stop here
 });
