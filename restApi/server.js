@@ -3,6 +3,7 @@
 
 // call the packages we need
 var https      = require("https");
+var url        = require("url");
 var express    = require('express'); 		// call express
 var redis      = require('redis');
 var session    = require('express-session');
