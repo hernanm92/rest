@@ -7,9 +7,12 @@ var express    = require('express'); 		// call express
 var app        = express(); 				// define our app using express
 var bodyParser = require('body-parser');
 //var session = require('express-session') , RedisStore = require('connect-redis')(session);
+var RedisStore = require('connect-redis')(express);
+app.use(express.session({ secret: "keyboard cat", store: new RedisStore }));
+
 
 //app.use(session({ store: new RedisStore({ host: '54.187.13.183', port: 8080, client: session }), secret: 'hernanm992' }))
-
+/*
 var redis = require("redis")
     , client = redis.createClient('127.0.0.1', 6379);
  
@@ -29,7 +32,7 @@ function runSample() {
         console.log(reply.toString());
     });
 }
-
+*/
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
