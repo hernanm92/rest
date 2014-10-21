@@ -275,3 +275,8 @@ app.use('/api', router);
 // =============================================================================
 app.listen(port);
 console.log('Listening on port ' + port);
+
+function getRequestIP(request){ //va a haber que pasarla al requestHandler tambien
+  return (request.headers['x-forwarded-for'] || '').split(',')[0] 
+        || request.connection.remoteAddress;
+}
