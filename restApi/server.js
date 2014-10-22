@@ -57,7 +57,7 @@ router.use(function(req, res, next) {
         console.log(err);
     });
 
-    client.hincrby(key, contador, 1);
+    client.hincrby(key, 'contador', 1);
 
 	// Set a value
     client.set(ip, pathname, function (err, reply) {
