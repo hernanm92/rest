@@ -45,8 +45,13 @@ router.use(function(req, res, next) {
 	console.log(client.hget(key, 'contador'));
 
     client.hget(key, 'contador', function (err, reply) {
-        console.log('reply: ' + reply);
-        contador = reply + 1;
+    	if (typeof reply !== 'undefined' && reply){
+    		console.log('reply: ' + reply);
+    		contador = reply + 1;
+    	}else{
+    		console.log('reply: ' + reply);
+    		contador = 1;
+    	}
     });
 	client.hmset(key, 'ip', ip, 'url', pathname, 'contador', contador, function (err, reply) {
         console.log(err);
