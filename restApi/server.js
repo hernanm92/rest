@@ -43,7 +43,7 @@ router.use(function(req, res, next) {
 
 	var key = ip + ':' + pathname;
 	console.log(client.hget(key, 'contador'));
-
+    /*
     client.hget(key, 'contador', function (err, reply) {
     	if (typeof reply !== 'undefined' && reply){
     		console.log('reply: ' + reply);
@@ -52,10 +52,12 @@ router.use(function(req, res, next) {
     		console.log('reply: ' + reply);
     		contador = 1;
     	}
-    });
-	client.hmset(key, 'ip', ip, 'url', pathname, 'contador', contador, function (err, reply) {
+    });*/
+	client.hmset(key, 'ip', ip, 'url', pathname, function (err, reply) {
         console.log(err);
     });
+
+    client.hincrby(key, contador, 1);
 
 	// Set a value
     client.set(ip, pathname, function (err, reply) {
