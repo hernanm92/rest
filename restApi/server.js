@@ -38,6 +38,10 @@ router.use(function(req, res, next) {
 	var pathname = url.parse(req.url).pathname;
 	console.log(ip);
 	console.log(pathname);
+
+	var key = ip + ':' + pathname;
+	client.hmset(key, 'ip', ip, 'url', pathname);
+
 	// Set a value
     client.set(ip, pathname, function (err, reply) {
         console.log(reply.toString());
