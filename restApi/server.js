@@ -12,7 +12,7 @@ var bodyParser = require('body-parser');
 var client     = redis.createClient();
 var app        = express(); 				// define our app using express
 
-var contador;
+var contador = 0;
 
 app.use(session(
 	{
@@ -45,7 +45,7 @@ router.use(function(req, res, next) {
 	console.log(client.hget(key, 'contador'));
 
     client.hget(key, 'contador', function (err, reply) {
-        console.log(reply.toString());
+        console.log('reply: ' + reply);
         contador = reply.toString() + 1;
     });
 	client.hmset(key, 'ip', ip, 'url', pathname, 'contador', contador, function (err, reply) {
