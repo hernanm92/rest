@@ -45,8 +45,8 @@ router.use(function(req, res, next) {
 	console.log(client.hget(key, 'contador'));
 
     client.hget(key, 'contador', function (err, reply) {
-        console.log('reply: ' + reply);
-        contador = reply.toString() + 1;
+        console.log('reply: ' + reply.toString());
+        contador = reply + 1;
     });
 	client.hmset(key, 'ip', ip, 'url', pathname, 'contador', contador, function (err, reply) {
         console.log(err);
