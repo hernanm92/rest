@@ -59,6 +59,12 @@ router.use(function(req, res, next) {
 
     client.hincrby(key, 'contador', 1);
 
+    client.lpush('dbz', 'goku');
+    client.ltrim('dbz', 0, 49);
+    var keys = client.lrange('dbz', 0, 10);
+    client.mget(*keys.map {|u| "users:#{u}"});
+
+
 	// Set a value
     client.set(ip, pathname, function (err, reply) {
         console.log(reply.toString());
