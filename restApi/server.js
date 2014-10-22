@@ -42,7 +42,10 @@ router.use(function(req, res, next) {
 	var key = ip + ':' + pathname;
 	console.log(client.hget(key, 'contador'));
 
-    var contador = client.hget(key, 'contador') + 1;
+    client.hget(key, 'contador', function (err, reply) {
+        console.log(reply.toString());
+        contador = reply.toString() + 1;
+    });
 	client.hmset(key, 'ip', ip, 'url', pathname, 'contador', contador);
 
 	// Set a value
