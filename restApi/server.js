@@ -12,6 +12,8 @@ var bodyParser = require('body-parser');
 var client     = redis.createClient();
 var app        = express(); 				// define our app using express
 
+var contador;
+
 app.use(session(
 	{
 		secret: 'hernanm992', 
