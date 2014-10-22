@@ -47,7 +47,7 @@ router.use(function(req, res, next) {
     client.hget(key, 'contador', function (err, reply) {
     	if (typeof reply !== 'undefined' && reply){
     		console.log('reply: ' + reply);
-    		contador = reply + 1;
+    		contador = parseInt(reply) + 1;
     	}else{
     		console.log('reply: ' + reply);
     		contador = 1;
@@ -76,11 +76,7 @@ router.get('/', function(req, res) {
         res.write("MELI-PROXY");	
 });
 
-//var Categories     = require('./app/models/categories');
-
 // more routes for our API will happen here
-
-// on routes that end in /bears
 // ----------------------------------------------------
 
 router.route('/:param1')
@@ -108,7 +104,13 @@ router.route('/:param1')
 		  request.on('error', function(error) {
 		    console.error(error);
 		  });
-	});	
+	})
+	// POST
+	.post(function(req, res) {
+		
+        res.json({ message: 'POST to /' + req.params.param1 });
+		
+	});
 
 router.route('/:param1/:param2')
 	.get(function(req, res) {
@@ -162,132 +164,7 @@ router.route('/:param1/:param2/:param3')
 		  request.on('error', function(error) {
 		    console.error(error);
 		  });
-	});	
-
-router.route('/categories')
-
-	// GET categories
-	.get(function(req, res) {
-		
-        res.json({ message: 'GET to categories' });
-		
-	})
-
-    // POST categories (s modo de ejemplo)
-	.post(function(req, res) {
-		
-        res.json({ message: 'POST to categories' });
-		
-	});
-
-router.route('/categories/:category')
-	.get(function(req, res) {
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/categories/' + req.params.category,
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
-		    });
-		  });
-		  request.end();
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
-	});
-
-router.route('/sites')
-	.get(function(req, res) {
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/sites',
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
-		    });
-		  });
-		  request.end();
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
-	});	
-
-router.route('/sites/:site')
-	.get(function(req, res) {
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/sites/' + req.params.site,
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
-		    });
-		  });
-		  request.end();
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
-	});	
-
-router.route('/sites/:site/categories')
-	.get(function(req, res) {
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/sites/' + req.params.site + '/categories',
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
-		    });
-		  });
-		  request.end();
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
 	});		
-
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
