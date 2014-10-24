@@ -1,16 +1,16 @@
-// BASE SETUP
+// CONFIGURACION
 // ==============================================================================
 
-// call the packages we need
+// modulos
 var https      = require("https");
 var url        = require("url");
-var express    = require('express'); 		// call express
+var express    = require('express');
 var redis      = require('redis');
 var session    = require('express-session');
 var redisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
 var client     = redis.createClient();
-var app        = express(); 				// define our app using express
+var app        = express(); 
 
 var contador = 0;
 
@@ -18,20 +18,19 @@ app.use(session(
 	{
 		secret: 'hernanm992', 
 		store: new redisStore({ host: 'localhost', port: 6379, client: client }),
-		saveUninitialized: false, // don't create session until something stored,
-		resave: false // don't save session if unmodified
+		saveUninitialized: false, 
+		resave: false 
 	}
 ));
-// configure app to use bodyParser()
-// this will let us get the data from a POST
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080; 		// set our port
+var port = process.env.PORT || 8080; //puerto de escucha
 
-// ROUTES FOR OUR API
+// RUTAS
 // =============================================================================
-var router = express.Router(); 				// get an instance of the express Router
+var router = express.Router(); // instancia del router express
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
@@ -59,17 +58,14 @@ router.use(function(req, res, next) {
 
     client.hincrby(key, 'contador', 1);
 
-    client.lpush('dbz', 'goku');
-    client.ltrim('dbz', 0, 49);
-    var keys = client.lrange('dbz', 0, 10);
-    client.mget(*keys.map {|u| "users:#{u}"});
+    //client.zadd(pathname, );
 
 
-	// Set a value
+	//pruebo settear un valor
     client.set(ip, pathname, function (err, reply) {
         console.log(reply.toString());
     });
-    // Get a value
+    //pruebo obtener el valor
     client.get(ip, function (err, reply) {
         console.log(reply.toString());
     });
@@ -78,13 +74,13 @@ router.use(function(req, res, next) {
 	next(); // make sure we go to the next routes and don't stop here
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:8080/api)
+
 router.get('/', function(req, res) {
 	res.json({ message: 'Welcome to MELI-PROXY' });
         res.write("MELI-PROXY");	
 });
 
-// more routes for our API will happen here
+// rutas para pegarle a la api
 // ----------------------------------------------------
 
 router.route('/:param1')
@@ -122,7 +118,7 @@ router.route('/:param1')
 
 router.route('/:param1/:param2')
 	.get(function(req, res) {
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
+		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 		  var options = {
 		    headers: {
@@ -149,7 +145,7 @@ router.route('/:param1/:param2')
 
 router.route('/:param1/:param2/:param3')
 	.get(function(req, res) {
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
+		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 		  var options = {
 		    headers: {
@@ -174,16 +170,15 @@ router.route('/:param1/:param2/:param3')
 		  });
 	});		
 
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
+// todas las rutas van a arrancar con /api
 app.use('/api', router);
 
-// START THE SERVER
+// INICIO DEL SERVIDOR
 // =============================================================================
 app.listen(port);
 console.log('Listening on port ' + port);
 
-function getRequestIP(request){ //va a haber que pasarla al requestHandler tambien
+function getRequestIP(request){
   return (request.headers['x-forwarded-for'] || '').split(',')[0] 
         || request.connection.remoteAddress;
 }
