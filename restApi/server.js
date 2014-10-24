@@ -57,8 +57,15 @@ router.use(function(req, res, next) {
     });
 
     client.hincrby(key, 'contador', 1);
+    client.hincrby(ip, 'contador', 1);
+    client.hincrby(pathname, 'contador', 1);
+
+    console.log('key' + client.hget(key, 'contador'));
+    console.log('ip' + client.hget(ip, 'contador'));
+    console.log('url' + client.hget(pathname, 'contador'));
 
     //client.zadd(pathname, );
+
 
 
 	//pruebo settear un valor
