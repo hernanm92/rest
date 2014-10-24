@@ -57,11 +57,11 @@ router.use(function(req, res, next) {
     });*/
     
     client.hmset(key, 'ip', ip, 'url', pathname);
-    //client.hmset(ip, 'ip', ip, 'url', pathname);
+    client.hmset(ip, 'ip', ip, 'url', pathname);
     client.hmset(pathname, 'ip', ip, 'url', pathname);
 
     client.hincrby(key, 'contador', 1);
-    //client.hincrby(ip, 'contador', 1);
+    client.hincrby(ip, 'contador', 1);
     client.hincrby(pathname, 'contador', 1);
     //se pueden meter en listas?
 
