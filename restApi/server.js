@@ -55,13 +55,9 @@ router.use(function(req, res, next) {
 	/*client.hmset(key, 'ip', ip, 'url', pathname, function (err, reply) {
         console.log(err);
     });*/
-    
-    client.hmset(key, 'ip', ip, 'url', pathname);
-    client.hmset(ip, 'ip', ip, 'url', pathname);
-    client.hmset(pathname, 'ip', ip, 'url', pathname);
 
     client.hincrby(key, 'contador', 1);
-    client.hincrby(ip, 'contador', 1);
+    //client.hincrby(ip, 'contador', 1); //la ip al ser un valor numerico se caga
     client.hincrby(pathname, 'contador', 1);
     //se pueden meter en listas?
 
@@ -72,9 +68,9 @@ router.use(function(req, res, next) {
     client.hget(key, 'contador', function (err, reply) {
         console.log('key' + reply);
     });
-    client.hget(ip, 'contador', function (err, reply) {
+    /*client.hget(ip, 'contador', function (err, reply) {
         console.log('ip' + reply);
-    });
+    });*/
     client.hget(pathname, 'contador', function (err, reply) {
         console.log('url' + reply);
     });
