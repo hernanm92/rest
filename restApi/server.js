@@ -59,10 +59,22 @@ router.use(function(req, res, next) {
     client.hincrby(key, 'contador', 1);
     client.hincrby(ip, 'contador', 1);
     client.hincrby(pathname, 'contador', 1);
+    //se pueden meter en listas?
 
-    console.log('key' + client.hget(key, 'contador'));
-    console.log('ip' + client.hget(ip, 'contador'));
-    console.log('url' + client.hget(pathname, 'contador'));
+    //console.log('key' + client.hget(key, 'contador'));
+    //console.log('ip' + client.hget(ip, 'contador'));
+    //console.log('url' + client.hget(pathname, 'contador'));
+
+    client.hget(key, 'contador', function (err, reply) {
+        console.log('key' + reply);
+    });
+    client.hget(ip, 'contador', function (err, reply) {
+        console.log('ip' + reply);
+    });
+    client.hget(pathname, 'contador', function (err, reply) {
+        console.log('url' + reply);
+    });
+
 
     //client.zadd(pathname, );
 
