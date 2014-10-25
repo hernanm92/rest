@@ -35,7 +35,7 @@ var router = express.Router(); // instancia del router express
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
-	var ip = getRequestIP(req).toString();
+	var ip = getRequestIP(req);
 	var pathname = url.parse(req.url).pathname;
 	console.log(ip);
 	console.log(pathname);
