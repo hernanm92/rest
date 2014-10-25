@@ -41,6 +41,10 @@ router.use(function(req, res, next) {
 	console.log(pathname);
 
 	var key = ip + ':' + pathname;
+  
+	console.log(typeof ip);
+	console.log(typeof pathname);
+	console.log(typeof key);
 	//console.log(client.hget(key, 'contador'));
     /*
     client.hget(key, 'contador', function (err, reply) {
