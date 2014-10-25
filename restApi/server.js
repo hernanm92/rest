@@ -35,7 +35,7 @@ var router = express.Router(); // instancia del router express
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
-	var ip = getRequestIP(req);
+	var ip = getRequestIP(req).toString();
 	var pathname = url.parse(req.url).pathname;
 	console.log(ip);
 	console.log(pathname);
@@ -57,7 +57,7 @@ router.use(function(req, res, next) {
     });*/
 
     client.hincrby(key, 'contador', 1);
-    //client.hincrby(ip, 'contador', 1); //la ip al ser un valor numerico se caga
+    client.hincrby(ip, 'contador', 1); //la ip al ser un valor numerico se caga
     client.hincrby(pathname, 'contador', 1);
     //se pueden meter en listas?
 
@@ -66,13 +66,13 @@ router.use(function(req, res, next) {
     //console.log('url' + client.hget(pathname, 'contador'));
 
     client.hget(key, 'contador', function (err, reply) {
-        console.log('key' + reply);
+        console.log('key: ' + reply);
     });
-    /*client.hget(ip, 'contador', function (err, reply) {
-        console.log('ip' + reply);
-    });*/
+    client.hget(ip, 'contador', function (err, reply) {
+        console.log('ip: ' + reply);
+    });
     client.hget(pathname, 'contador', function (err, reply) {
-        console.log('url' + reply);
+        console.log('url: ' + reply);
     });
 
 
