@@ -207,38 +207,7 @@ router.route('/:param1/:param2')
 	});	
 
 router.route('/:param1/:param2/:param3')
-	.get(function(req, res) {
-	   	  var data = '';
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3,
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      info += data;
-		    });
-            response.on('end', function(){
-              res.send(JSON.parse(info));
-            });
-            response.on('error', function(error){
-              console.error(error);
-            });
-		  });
-		  request.end();
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
-	});		
+	.get(getRequestFunction(req, res));		
 
 // todas las rutas van a arrancar con /api
 app.use('/api', router);
@@ -251,4 +220,42 @@ console.log('Listening on port ' + port);
 function getRequestIP(request){
   return (request.headers['x-forwarded-for'] || '').split(',')[0] 
         || request.connection.remoteAddress;
+}
+
+function getRequestFunction(req, res){
+	var data = '';
+	https.globalAgent.options.secureProtocol = 'SSLv3_method';
+
+	var options = {
+	  headers: {
+	    accept: '*/*'
+	  },
+	  host: 'api.mercadolibre.com',
+	  port: 443,
+	  path: '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3,
+	  method: 'GET'
+	};
+
+	var request = https.request(options, function(response) {
+	  console.log(response.statusCode);
+	  response.on('data', function(data) {
+	    info += data;
+	  });
+	  response.on('end', function(){
+	    res.send(JSON.parse(info));
+	  });
+	  response.on('error', function(error){
+	    console.error(error);
+	  });
+	});
+	request.end();
+
+	request.on('error', function(error) {
+	  console.error(error);
+	});	
+
+}
+
+function expire(){
+
 }
