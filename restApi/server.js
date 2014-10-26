@@ -158,7 +158,7 @@ router.route('/:param1')
 
 router.route('/:param1/:param2')
 	.get(function(req, res) {
-		  var data = '';
+		  var info = '';
 		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 		  var options = {
@@ -174,11 +174,14 @@ router.route('/:param1/:param2')
 		  var request = https.request(options, function(response) {
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
-		      info = data;
+		      info += data;
 		    });
-		  });
-		  request.on('end', function(){
-			res.send(JSON.parse(info));
+                    response.on('end', function(){
+                      res.send(JSON.parse(info));
+                    });
+                    response.on('error', function(error){
+                      console.error(error);
+                    })
 		  });
 		  request.end();
 
