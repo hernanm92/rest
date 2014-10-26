@@ -135,80 +135,24 @@ router.get('/', function(req, res) {
 
 router.route('/:param1')
 	.get(function(req, res) {
-		  var info = '';
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/' + req.params.param1,
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      info += data;
-		    });
-            response.on('end', function(){
-              res.send(JSON.parse(info));
-            });
-            response.on('error', function(error){
-              console.error(error);
-            });		    
-		  });
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
+		var getPath = '/' + req.params.param1;
+		getRequestFunction(req, res, getPath);
 	})
 	// POST
 	.post(function(req, res) {
-		
         res.json({ message: 'POST to /' + req.params.param1 });
-		
 	});
 
 router.route('/:param1/:param2')
 	.get(function(req, res) {
-		  var info = '';
-		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
-
-		  var options = {
-		    headers: {
-		      accept: '*/*'
-		    },
-		    host: 'api.mercadolibre.com',
-		    port: 443,
-		    path: '/' + req.params.param1 + '/' + req.params.param2,
-		    method: 'GET'
-		  };
-
-		  var request = https.request(options, function(response) {
-		    console.log(response.statusCode);
-		    response.on('data', function(data) {
-		      info += data;
-		    });
-            response.on('end', function(){
-              res.send(JSON.parse(info));
-            });
-            response.on('error', function(error){
-              console.error(error);
-            });
-		  });
-		  request.end();
-
-		  request.on('error', function(error) {
-		    console.error(error);
-		  });
+		var getPath = '/' + req.params.param1 + '/' + req.params.param2;
+		getRequestFunction(req, res, getPath);
 	});	
 
 router.route('/:param1/:param2/:param3')
 	.get(function(req, res) {
-		getRequestFunction(req,res);
+		var getPath = '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3;
+		getRequestFunction(req, res, getPath);
 	});		
 
 // todas las rutas van a arrancar con /api
@@ -224,7 +168,7 @@ function getRequestIP(request){
         || request.connection.remoteAddress;
 }
 
-function getRequestFunction(req, res){
+function getRequestFunction(req, res, getPath){
 	var info = '';
 	https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
@@ -234,7 +178,7 @@ function getRequestFunction(req, res){
 	  },
 	  host: 'api.mercadolibre.com',
 	  port: 443,
-	  path: '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3,
+	  path: getPath,
 	  method: 'GET'
 	};
 
