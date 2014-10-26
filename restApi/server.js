@@ -48,7 +48,7 @@ router.use(function(req, res, next) {
 
 	client.get(ipExpire, function (err, reply) {
 		console.log(reply);
-        if(reply != null){
+        if(reply != null || ipExpire != 0){
 
         }else{
         	client.set(ipExpire, 0);
