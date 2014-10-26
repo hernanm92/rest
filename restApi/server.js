@@ -48,11 +48,13 @@ router.use(function(req, res, next) {
 
 	client.get(ipExpire, function (err, reply) {
         if(reply != null){
+        	client.set(ipExpire, 0);
         	client.expire(ipExpire, 20);
         	console.log(err);
 
         }
     });
+    client.incr(ipExpire);
     client.get(ipExpire, function (err, reply) {
         console.log('ipExpire: ' + reply);
     });
