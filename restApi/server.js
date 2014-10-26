@@ -21,6 +21,8 @@ app.use(session(
 	}
 ));
 
+client.set_response_callback('GET', int)
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -47,10 +49,12 @@ router.use(function(req, res, next) {
 	client.get(ipExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
+            if(){
 
+            }
         }else{
         	client.set(ipExpire, 0);
-        	client.expire(ipExpire, 20);
+        	client.expire(ipExpire, 40);
         }
     });
     client.incr(ipExpire);
@@ -64,28 +68,13 @@ router.use(function(req, res, next) {
 
         }else{
         	client.set(keyExpire, 0);
-        	client.expire(keyExpire, 20);
+        	client.expire(keyExpire, 40);
         }
     });
     client.incr(keyExpire);
     client.get(keyExpire, function (err, reply) {
         console.log('keyExpire: ' + reply);
     });    
-  
-	//console.log(client.hget(key, 'contador'));
-    /*
-    client.hget(key, 'contador', function (err, reply) {
-    	if (typeof reply !== 'undefined' && reply){
-    		console.log('reply: ' + reply);
-    		contador = parseInt(reply) + 1;
-    	}else{
-    		console.log('reply: ' + reply);
-    		contador = 1;
-    	}
-    });*/
-	/*client.hmset(key, 'ip', ip, 'url', pathname, function (err, reply) {
-        console.log(err);
-    });*/
 
     client.incr(key);
     client.incr(ip);
@@ -106,20 +95,8 @@ router.use(function(req, res, next) {
         console.log('url: ' + reply);
     });
 
-
     //client.zadd(pathname, );
 
-
-/*
-	//pruebo settear un valor
-    client.set(ip, pathname, function (err, reply) {
-        console.log(reply.toString());
-    });
-    //pruebo obtener el valor
-    client.get(ip, function (err, reply) {
-        console.log(reply.toString());
-    });
-*/
 	console.log('Something is happening.');
 	next(); // make sure we go to the next routes and don't stop here
 });
