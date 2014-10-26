@@ -21,7 +21,6 @@ app.use(session(
 	}
 ));
 
-client.set_response_callback('GET', int)
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -49,7 +48,7 @@ router.use(function(req, res, next) {
 	client.get(ipExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
-            if(reply >= 5){
+            if(parseInt(reply) >= 5){
             	var ipBlock = ip + ':block';
             	client.set(ipBlock, 1);
             }
