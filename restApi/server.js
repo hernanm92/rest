@@ -21,6 +21,11 @@ app.use(session(
 	}
 ));
 
+app.on('connection', function (sock) {
+  console.log(sock.remoteAddress);
+  // Put your logic for what to do next based on that remote address here
+});
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
