@@ -47,12 +47,12 @@ router.use(function(req, res, next) {
 	var keyExpire = key + ':expire';
 
 	client.get(ipExpire, function (err, reply) {
+		console.log(reply);
         if(reply != null){
 
         }else{
         	client.set(ipExpire, 0);
         	client.expire(ipExpire, 20);
-        	console.log(err);
         }
     });
     client.incr(ipExpire);
