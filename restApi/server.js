@@ -118,6 +118,20 @@ router.get('/', function(req, res) {
 
 // rutas para pegarle a la api
 // ----------------------------------------------------
+router.route('/:param1/estadisticas')
+	.get(function(req, res) {
+		res.json({ message: 'Voy a mostrar estadisticas' });
+	});
+
+router.route('/:param1/:param2/estadisticas')
+	.get(function(req, res) {
+		res.json({ message: 'Voy a mostrar estadisticas' });
+	});
+
+router.route('/:param1/:param2/:param3/estadisticas')
+	.get(function(req, res) {
+		res.json({ message: 'Voy a mostrar estadisticas' });
+	});		
 
 router.route('/:param1')
 	.get(function(req, res) {
