@@ -225,7 +225,7 @@ function getRequestIP(request){
 }
 
 function getRequestFunction(req, res){
-	var data = '';
+	var info = '';
 	https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 	var options = {
