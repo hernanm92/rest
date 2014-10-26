@@ -123,6 +123,7 @@ router.get('/', function(req, res) {
 
 router.route('/:param1')
 	.get(function(req, res) {
+		  var info = '';
 		  https.globalAgent.options.secureProtocol = 'SSLv3_method'; //para que no me tire error
 
 		  var options = {
@@ -138,8 +139,11 @@ router.route('/:param1')
 		  var request = https.request(options, function(response) {
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
+		      info = data;
 		    });
+		  });
+		  request.on('end', function(){
+			var obj = JSON.parse(info);
 		  });
 		  request.end();
 
@@ -156,6 +160,7 @@ router.route('/:param1')
 
 router.route('/:param1/:param2')
 	.get(function(req, res) {
+		  var data = '';
 		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 		  var options = {
@@ -171,8 +176,11 @@ router.route('/:param1/:param2')
 		  var request = https.request(options, function(response) {
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
+		      info = data;
 		    });
+		  });
+		  request.on('end', function(){
+			var obj = JSON.parse(info);
 		  });
 		  request.end();
 
@@ -183,6 +191,7 @@ router.route('/:param1/:param2')
 
 router.route('/:param1/:param2/:param3')
 	.get(function(req, res) {
+	   	  var data = '';
 		  https.globalAgent.options.secureProtocol = 'SSLv3_method';
 
 		  var options = {
@@ -198,8 +207,11 @@ router.route('/:param1/:param2/:param3')
 		  var request = https.request(options, function(response) {
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
-		      res.send(JSON.parse(data));
+		      info = data;
 		    });
+		  });
+		  request.on('end', function(){
+			var obj = JSON.parse(info);
 		  });
 		  request.end();
 
