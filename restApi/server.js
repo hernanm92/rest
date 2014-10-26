@@ -42,9 +42,6 @@ router.use(function(req, res, next) {
 
 	var key = ip + ':' + pathname;
   
-	console.log(typeof ip);
-	console.log(typeof pathname);
-	console.log(typeof key);
 	//console.log(client.hget(key, 'contador'));
     /*
     client.hget(key, 'contador', function (err, reply) {
@@ -60,22 +57,22 @@ router.use(function(req, res, next) {
         console.log(err);
     });*/
 
-    client.hincrby(key, 'contador', 1);
-    client.hincrby(ip, 'contador', 1); //la ip al ser un valor numerico se caga
-    client.hincrby(pathname, 'contador', 1);
+    client.incr(key);
+    client.incr(ip); //la ip al ser un valor numerico se caga
+    client.incr(pathname);
     //se pueden meter en listas?
 
     //console.log('key' + client.hget(key, 'contador'));
     //console.log('ip' + client.hget(ip, 'contador'));
     //console.log('url' + client.hget(pathname, 'contador'));
 
-    client.hget(key, 'contador', function (err, reply) {
+    client.get(key, function (err, reply) {
         console.log('key: ' + reply);
     });
-    client.hget(ip, 'contador', function (err, reply) {
+    client.get(ip, function (err, reply) {
         console.log('ip: ' + reply);
     });
-    client.hget(pathname, 'contador', function (err, reply) {
+    client.get(pathname, function (err, reply) {
         console.log('url: ' + reply);
     });
 
