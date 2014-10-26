@@ -47,6 +47,7 @@ router.use(function(req, res, next) {
 	client.get(ipBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
         	res.json({ message: 'Your IP has been block' });
+                res.end();
         }
     });
 
