@@ -207,7 +207,9 @@ router.route('/:param1/:param2')
 	});	
 
 router.route('/:param1/:param2/:param3')
-	.get(getRequestFunction(req, res));		
+	.get(function(req, res) {
+		getRequestFunction(req,res);
+	});		
 
 // todas las rutas van a arrancar con /api
 app.use('/api', router);
