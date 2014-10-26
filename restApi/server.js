@@ -33,6 +33,7 @@ var router = express.Router(); // instancia del router express
 
 // middleware to use for all requests
 router.use(function(req, res, next) {
+
 	//guardo y checkeo en la base de datos
 	var ip = getRequestIP(req);
 	var pathname = url.parse(req.url).pathname;
@@ -40,6 +41,12 @@ router.use(function(req, res, next) {
 	console.log(pathname);
 
 	var key = ip + ':' + pathname;
+
+	var ipBlock = ip + ':block';
+
+	if(client.get(ipBlock) == '1'){
+		res.json({ message: 'Your IP has been block' });
+	}
 
 	var ipExpire = ip + ':expire';
 	//var pathnameExpire = ip + ':expire';
@@ -49,7 +56,6 @@ router.use(function(req, res, next) {
 		console.log(reply);
         if(reply){
             if(parseInt(reply) >= 5){
-            	var ipBlock = ip + ':block';
             	client.set(ipBlock, 1);
             }
         }else{
