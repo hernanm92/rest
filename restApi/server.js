@@ -49,8 +49,9 @@ router.use(function(req, res, next) {
 	client.get(ipExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
-            if(){
-
+            if(reply >= 5){
+            	var ipBlock = ip + ':block';
+            	client.set(ipBlock, 1);
             }
         }else{
         	client.set(ipExpire, 0);
