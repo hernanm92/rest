@@ -35,12 +35,12 @@ var router = express.Router(); // instancia del router express
 // middleware to use for all requests
 router.use(function(req, res, next) {
 	//guardo y checkeo en la base de datos
-	var ip2 = getRequestIP(req);
+	var ip = getRequestIP(req);
 	var pathname = url.parse(req.url).pathname;
-	console.log(ip2);
+	console.log(ip);
 	console.log(pathname);
 
-	var key = ip2 + ':' + pathname;
+	var key = ip + ':' + pathname;
   
 	//console.log(client.hget(key, 'contador'));
     /*
@@ -58,7 +58,7 @@ router.use(function(req, res, next) {
     });*/
 
     client.incr(key);
-    client.incr(ip2); //la ip al ser un valor numerico se caga
+    client.incr(ip);
     client.incr(pathname);
     //se pueden meter en listas?
 
@@ -69,7 +69,7 @@ router.use(function(req, res, next) {
     client.get(key, function (err, reply) {
         console.log('key: ' + reply);
     });
-    client.get(ip2, function (err, reply) {
+    client.get(ip, function (err, reply) {
         console.log('ip: ' + reply);
     });
     client.get(pathname, function (err, reply) {
@@ -80,16 +80,16 @@ router.use(function(req, res, next) {
     //client.zadd(pathname, );
 
 
-
+/*
 	//pruebo settear un valor
-    client.set(ip2, pathname, function (err, reply) {
+    client.set(ip, pathname, function (err, reply) {
         console.log(reply.toString());
     });
     //pruebo obtener el valor
-    client.get(ip2, function (err, reply) {
+    client.get(ip, function (err, reply) {
         console.log(reply.toString());
     });
-
+*/
 	console.log('Something is happening.');
 	next(); // make sure we go to the next routes and don't stop here
 });
