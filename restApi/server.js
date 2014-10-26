@@ -45,18 +45,13 @@ router.use(function(req, res, next) {
 	var ipBlock = ip + ':block';
 
 	client.get(ipBlock, function (err, reply) {
-		console.log(typeof "1");
-		console.log(typeof reply);
-		console.log(typeof null);
-        //if (reply) {};
+        if (typeof "1" == typeof reply) { //string
+        	res.json({ message: 'Your IP has been block' });
+        }
     });
 
-	if(client.get(ipBlock) == '1'){
-		res.json({ message: 'Your IP has been block' });
-	}
-
 	var ipExpire = ip + ':expire';
-	//var pathnameExpire = ip + ':expire';
+	//var pathnameExpire = pathname + ':expire';
 	var keyExpire = key + ':expire';
 
 	client.get(ipExpire, function (err, reply) {
