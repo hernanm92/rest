@@ -41,6 +41,14 @@ router.use(function(req, res, next) {
 	console.log(pathname);
 
 	var key = ip + ':' + pathname;
+
+	var ipExpire = ip + ':expire';
+	//var pathnameExpire = ip + ':expire';
+	var keyExpire = key + ':expire';
+
+	client.get(ipExpire, function (err, reply) {
+        console.log('expire: ' + reply);
+    });
   
 	//console.log(client.hget(key, 'contador'));
     /*
