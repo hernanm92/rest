@@ -137,13 +137,15 @@ router.route('/:param1')
 		  var request = https.request(options, function(response) {
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
-		      info = data;
+		      info += data;
 		    });
+            response.on('end', function(){
+              res.send(JSON.parse(info));
+            });
+            response.on('error', function(error){
+              console.error(error);
+            });		    
 		  });
-		  request.on('end', function(){
-			res.send(JSON.parse(info));
-		  });
-		  request.end();
 
 		  request.on('error', function(error) {
 		    console.error(error);
@@ -176,12 +178,12 @@ router.route('/:param1/:param2')
 		    response.on('data', function(data) {
 		      info += data;
 		    });
-                    response.on('end', function(){
-                      res.send(JSON.parse(info));
-                    });
-                    response.on('error', function(error){
-                      console.error(error);
-                    })
+            response.on('end', function(){
+              res.send(JSON.parse(info));
+            });
+            response.on('error', function(error){
+              console.error(error);
+            });
 		  });
 		  request.end();
 
@@ -208,11 +210,14 @@ router.route('/:param1/:param2/:param3')
 		  var request = https.request(options, function(response) {
 		    console.log(response.statusCode);
 		    response.on('data', function(data) {
-		      info = data;
+		      info += data;
 		    });
-		  });
-		  request.on('end', function(){
-			res.send(JSON.parse(info));
+            response.on('end', function(){
+              res.send(JSON.parse(info));
+            });
+            response.on('error', function(error){
+              console.error(error);
+            });
 		  });
 		  request.end();
 
