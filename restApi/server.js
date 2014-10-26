@@ -12,8 +12,6 @@ var bodyParser = require('body-parser');
 var client     = redis.createClient();
 var app        = express(); 
 
-var contador = 0;
-
 app.use(session(
 	{
 		secret: 'hernanm992', 
@@ -143,7 +141,7 @@ router.route('/:param1')
 		    });
 		  });
 		  request.on('end', function(){
-			var obj = JSON.parse(info);
+			res.send(JSON.parse(info));
 		  });
 		  request.end();
 
@@ -180,7 +178,7 @@ router.route('/:param1/:param2')
 		    });
 		  });
 		  request.on('end', function(){
-			var obj = JSON.parse(info);
+			res.send(JSON.parse(info));
 		  });
 		  request.end();
 
@@ -211,7 +209,7 @@ router.route('/:param1/:param2/:param3')
 		    });
 		  });
 		  request.on('end', function(){
-			var obj = JSON.parse(info);
+			res.send(JSON.parse(info));
 		  });
 		  request.end();
 
