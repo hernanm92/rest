@@ -47,7 +47,14 @@ router.use(function(req, res, next) {
 	var keyExpire = key + ':expire';
 
 	client.get(ipExpire, function (err, reply) {
-        console.log('expire: ' + reply);
+        if(reply != null){
+        	client.expire(ipExpire, 20);
+        	console.log(err);
+
+        }
+    });
+    client.get(ipExpire, function (err, reply) {
+        console.log('ipExpire: ' + reply);
     });
   
 	//console.log(client.hget(key, 'contador'));
