@@ -176,6 +176,9 @@ function expire(){
 }
 
 function noBloqueado(ip, pathname, key){
+	var ipBlock = ip + ':block';
+	var pathBlock = pathname + ':block';
+	var keyBlock = key + ':block';
 
 	var ipExpire = ip + ':expire';
 	//var pathnameExpire = pathname + ':expire';
