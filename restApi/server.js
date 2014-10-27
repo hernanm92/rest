@@ -89,6 +89,16 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/:param1/estadisticas')
 	.get(function(req, res) {
+	client.sort("ips","*","DESC", function (err, replies) {
+	    if (err) {
+	        return console.error("error response - " + err);
+	    }
+
+	    console.log(replies.length + " replies:");
+	    replies.forEach(function (reply, i) {
+	        console.log(" sorted --> " + i + ": " + reply);
+	    });
+	});
 		res.json({ message: 'Voy a mostrar estadisticas' });
 	});
 
