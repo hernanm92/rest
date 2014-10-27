@@ -51,12 +51,15 @@ router.use(function(req, res, next) {
 	var keyBlock = key + ':block';
 
 	var block = 0;
-
+        
+        console.log(client.get(ipBlock));//esto no es asincronico
+        console.log(client.get('prueba'));//esto no es asincronico
 	client.get(ipBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
             block = 1;
         	res.json({ message: 'Your IP has been block' });
             res.end();
+            console.log('block ip:' + block.toString());
         }
     });
     client.get(pathBlock, function (err, reply) {
@@ -74,6 +77,7 @@ router.use(function(req, res, next) {
         }
     });
 
+    console.log('block:' + block.toString());
     if(block == 0){//si el request esta bloqueado, no hace nada
 
 		var ipExpire = ip + ':expire';
