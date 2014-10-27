@@ -93,7 +93,9 @@ router.route('/:param1/estadisticas')
 
 		    console.log(replies.length + " replies:");
 		    replies.forEach(function (reply, i) {
-		        console.log(" sorted --> " + i + ": " + reply);
+		    	client.get(reply, function (err, cant){
+		        	console.log(" sorted --> " + i + ": " + reply + " : " + cant);
+		    	});
 		    });
 		});
 		res.json({ message: 'Voy a mostrar estadisticas' });
