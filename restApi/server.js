@@ -91,16 +91,16 @@ router.route('/:param1/estadisticas')
 		        return console.error("error response - " + err);
 		    }
 
-		    response.writeHead(200, {"Content-Type": "text/html"});
-		    response.write(replies.length + " replies:");
+		    res.writeHead(200, {"Content-Type": "text/html"});
+		    res.write(replies.length + " replies:");
 		    replies.forEach(function (reply, i) {
 		    	client.get(reply, function (err, cant){
-                    response.write(" sorted --> " + i + ": " + reply + " : " + cant);
+                    res.write(" sorted --> " + i + ": " + reply + " : " + cant);
 		        	//console.log(" sorted --> " + i + ": " + reply + " : " + cant);
 		    	});
 		    });
 		});
-		res.json({ message: 'Voy a mostrar estadisticas' });
+		//res.json({ message: 'Voy a mostrar estadisticas' });
 	});
 
 router.route('/:param1/:param2/estadisticas')
