@@ -47,7 +47,7 @@ router.use(function(req, res, next) {
 	var key = ip + ':' + pathname;
 
 	var ipBlock = ip + ':block';
-	//var pathBlock = pathname + ':block';
+	var pathBlock = pathname + ':block';
 	var keyBlock = key + ':block';
 
 	var block = 0;
