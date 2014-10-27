@@ -91,10 +91,12 @@ router.route('/:param1/estadisticas')
 		        return console.error("error response - " + err);
 		    }
 
-		    console.log(replies.length + " replies:");
+		    response.writeHead(200, {"Content-Type": "text/html"});
+		    response.write(replies.length + " replies:");
 		    replies.forEach(function (reply, i) {
 		    	client.get(reply, function (err, cant){
-		        	console.log(" sorted --> " + i + ": " + reply + " : " + cant);
+                    response.write(" sorted --> " + i + ": " + reply + " : " + cant);
+		        	//console.log(" sorted --> " + i + ": " + reply + " : " + cant);
 		    	});
 		    });
 		});
