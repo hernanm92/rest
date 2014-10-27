@@ -54,23 +54,23 @@ router.use(function(req, res, next) {
 
 	client.get(ipBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
+            block = 1;
         	res.json({ message: 'Your IP has been block' });
             res.end();
-            block = 1;
         }
     });
     client.get(pathBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
+            block = 1;
         	res.json({ message: 'Your IP has been block' });
             res.end();
-            block = 1;
         }
     });
     client.get(keyBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
+            block = 1;
         	res.json({ message: 'Your IP has been block' });
             res.end();
-            block = 1;
         }
     });
 
