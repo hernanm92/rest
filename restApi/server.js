@@ -47,72 +47,93 @@ router.use(function(req, res, next) {
 	var key = ip + ':' + pathname;
 
 	var ipBlock = ip + ':block';
+	//var pathBlock = pathname + ':block';
+	var keyBlock = key + ':block';
+
+	var block = 0;
 
 	client.get(ipBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
         	res.json({ message: 'Your IP has been block' });
-                res.end();
-        }else{
-        	
-			var ipExpire = ip + ':expire';
-			//var pathnameExpire = pathname + ':expire';
-			var keyExpire = key + ':expire';
-
-			client.get(ipExpire, function (err, reply) {
-				console.log(reply);
-		        if(reply){
-		            if(parseInt(reply) >= 5){
-		            	client.set(ipBlock, 1);
-		            }
-		        }else{
-		        	client.set(ipExpire, 0);
-		        	client.expire(ipExpire, 40);
-		        }
-		    });
-		    client.incr(ipExpire);
-		    client.get(ipExpire, function (err, reply) {
-		        console.log('ipExpire: ' + reply);
-		    });
-
-			client.get(keyExpire, function (err, reply) {
-				console.log(reply);
-		        if(reply){
-
-		        }else{
-		        	client.set(keyExpire, 0);
-		        	client.expire(keyExpire, 40);
-		        }
-		    });
-		    client.incr(keyExpire);
-		    client.get(keyExpire, function (err, reply) {
-		        console.log('keyExpire: ' + reply);
-		    });    
-
-		    client.incr(key);
-		    client.incr(ip);
-		    client.incr(pathname);
-		    //se pueden meter en listas?
-
-		    //console.log('key' + client.hget(key, 'contador'));
-		    //console.log('ip' + client.hget(ip, 'contador'));
-		    //console.log('url' + client.hget(pathname, 'contador'));
-
-		    client.get(key, function (err, reply) {
-		        console.log('key: ' + reply);
-		    });
-		    client.get(ip, function (err, reply) {
-		        console.log('ip: ' + reply);
-		    });
-		    client.get(pathname, function (err, reply) {
-		        console.log('url: ' + reply);
-		    });
-
-		    //client.zadd(pathname, );
-
-			console.log('Something is happening.');
-			next(); // make sure we go to the next routes and don't stop here
+            res.end();
+            block = 1;
         }
     });
+    client.get(pathBlock, function (err, reply) {
+        if (typeof "1" == typeof reply) { //string
+        	res.json({ message: 'Your IP has been block' });
+            res.end();
+            block = 1;
+        }
+    });
+    client.get(keyBlock, function (err, reply) {
+        if (typeof "1" == typeof reply) { //string
+        	res.json({ message: 'Your IP has been block' });
+            res.end();
+            block = 1;
+        }
+    });
+
+    if(block == 0){//si el request esta bloqueado, no hace nada
+
+		var ipExpire = ip + ':expire';
+		//var pathnameExpire = pathname + ':expire';
+		var keyExpire = key + ':expire';
+
+		client.get(ipExpire, function (err, reply) {
+			console.log(reply);
+	        if(reply){
+	            if(parseInt(reply) >= 5){
+	            	client.set(ipBlock, 1);
+	            }
+	        }else{
+	        	client.set(ipExpire, 0);
+	        	client.expire(ipExpire, 40);
+	        }
+	    });
+	    client.incr(ipExpire);
+	    client.get(ipExpire, function (err, reply) {
+	        console.log('ipExpire: ' + reply);
+	    });
+
+		client.get(keyExpire, function (err, reply) {
+			console.log(reply);
+	        if(reply){
+
+	        }else{
+	        	client.set(keyExpire, 0);
+	        	client.expire(keyExpire, 40);
+	        }
+	    });
+	    client.incr(keyExpire);
+	    client.get(keyExpire, function (err, reply) {
+	        console.log('keyExpire: ' + reply);
+	    });    
+
+	    client.incr(key);
+	    client.incr(ip);
+	    client.incr(pathname);
+	    //se pueden meter en listas?
+
+	    //console.log('key' + client.hget(key, 'contador'));
+	    //console.log('ip' + client.hget(ip, 'contador'));
+	    //console.log('url' + client.hget(pathname, 'contador'));
+
+	    client.get(key, function (err, reply) {
+	        console.log('key: ' + reply);
+	    });
+	    client.get(ip, function (err, reply) {
+	        console.log('ip: ' + reply);
+	    });
+	    client.get(pathname, function (err, reply) {
+	        console.log('url: ' + reply);
+	    });
+
+	    //client.zadd(pathname, );
+
+		console.log('Something is happening.');
+		next(); // make sure we go to the next routes and don't stop here
+	} 
 });
 
 
