@@ -49,8 +49,6 @@ router.use(function(req, res, next) {
 	var ipBlock = ip + ':block';
 	var pathBlock = pathname + ':block';
 	var keyBlock = key + ':block';
-
-	var block = 0;
         
 	client.get(ipBlock, function (err, reply) {
         if (typeof "1" == typeof reply) { //string
@@ -64,7 +62,6 @@ router.use(function(req, res, next) {
 		        }else{
 				    client.get(keyBlock, function (err, reply) {
 				        if (typeof "1" == typeof reply) { //string
-				            block = 1;
 				        	res.json({ message: 'Your IP has been block' });
 				            res.end();
 				        }else{
@@ -186,6 +183,12 @@ function expire(){
 }
 
 function noBloqueado(ip, pathname, key){
+	client.sismember("ips", ip, function(err, reply){
+		if(reply == "0"){
+			client.sadd("ips", ip);
+		}
+	});
+
 	var ipBlock = ip + ':block';
 	var pathBlock = pathname + ':block';
 	var keyBlock = key + ':block';
