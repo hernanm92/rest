@@ -465,7 +465,7 @@ function noBloqueado(ip, pathname, key){
 				});
             }
         }else{
-        	client.set(ipExpire, 0);
+        	client.set(ipExpire, 1);//si no esta setteado se lo vuelvo a settear
         	client.expire(ipExpire, 40);
         }
     });
@@ -486,7 +486,7 @@ function noBloqueado(ip, pathname, key){
 				});
             }
         }else{
-        	client.set(keyExpire, 0);
+        	client.set(keyExpire, 1);
         	client.expire(keyExpire, 40);
         }
     });
@@ -507,7 +507,7 @@ function noBloqueado(ip, pathname, key){
 				});
             }
         }else{
-        	client.set(pathnameExpire, 0);
+        	client.set(pathnameExpire, 1);
         	client.expire(pathnameExpire, 40);
         }
     });
