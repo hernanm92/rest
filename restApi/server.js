@@ -84,6 +84,13 @@ router.get('/', function(req, res) {
 
 // rutas para pegarle a la api
 // ----------------------------------------------------
+router.route('/block/:ip')
+	.post(function(req, res) {
+		var ipBlock = req.params.ip + ':block';
+		client.set(ipBlock, 1);
+        client.sadd("ipsBlock", req.params.ip);
+    });    
+
 router.route('/ips/estadisticas')
 	.get(function(req, res) {
         urlStaticStadistics("ips", "ips", 'No hay estadisticas para mostrar', res, 0);
