@@ -102,90 +102,30 @@ router.route('/ips/estadisticas/block')
 router.route('/urls/estadisticas/block')
 	.get(function(req, res) {
         urlStaticStadistics("urlsBlock", "urls", 'No hay urls bloqueadas', res, 1);
-    });             
-
+    });    
+      
 router.route('/:param1/estadisticas')
 	.get(function(req, res) {
-		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay estadisticas para mostrar' });
-	    	}else{
-				client.sort("keys","by","*","desc", function (err, replies) {//me traigo la lista ordenada
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
-
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    //res.write(replies.length + " ips:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-				    		if(reply.split(":")[1] == ('/' + req.params.param1)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
-				    		}
-		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
+		var getPath = '/' + req.params.param1;
+		urlDinamicStadistics("keys", res , 0, getPath);
 	});
 
 router.route('/:param1/:param2/estadisticas')
 	.get(function(req, res) {
-		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay estadisticas para mostrar' });
-	    	}else{
-				client.sort("keys","by","*","desc", function (err, replies) {//me traigo la lista ordenada
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
-
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    //res.write(replies.length + " ips:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
-				    		}
-		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
+		var getPath = '/' + req.params.param1 + '/' + req.params.param2;
+		urlDinamicStadistics("keys", res , 0, getPath);
 	});
 
 router.route('/:param1/:param2/:param3/estadisticas')
 	.get(function(req, res) {
-		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay estadisticas para mostrar' });
-	    	}else{
-				client.sort("keys","by","*","desc", function (err, replies) {//me traigo la lista ordenada
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
+		var getPath = '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3;
+		urlDinamicStadistics("keys", res , 0, getPath);
+	});
 
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    //res.write(replies.length + " ips:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
-				    		}
-		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
+router.route('/:param1/:param2/:param3/:param4/estadisticas')
+	.get(function(req, res) {
+		var getPath = '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3 + '/' + req.params.param4;
+		urlDinamicStadistics("keys", res , 0, getPath);
 	});
 
 router.route('/:param1/estadisticas/block')
@@ -375,8 +315,38 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 	});
 }
 
-function urlDinamicStadistics(){
+function urlDinamicStadistics(list, res , block, url){
+	client.scard(list, function (err, total){//me traigo la cantidad de elementos de la lista
+        if(parseInt(total) == 0){
+        	if(block){
+        		res.json({ message: 'No hay bloqueos para mostrar' });
+        	}else{
+    			res.json({ message: 'No hay estadisticas para mostrar' });
+        	}
+    	}else{
+			client.sort(list,"by","*","desc", function (err, replies) {//me traigo la lista ordenada
+			    if (err) {
+			        return console.error("error response - " + err);
+			    }
 
+			    res.writeHead(200, {"Content-Type": "text/html"});
+			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+			    	client.get(reply, function (err, cant){
+			    		if(reply.split(":")[1] == url){ //solo muestro las ips que le pegaron a esa url
+			    			if(block){
+			    				res.write(reply.split(":")[0] + "</BR>");
+			    			}else{
+		                    	res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+			    			}
+			    		}
+	                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
+	                    	res.end();
+	                    }
+			    	});
+			    });    
+			});
+    	}
+	});		
 }
 
 function expire(block, expire, blockList, element, time, amount){
