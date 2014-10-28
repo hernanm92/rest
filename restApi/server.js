@@ -96,7 +96,7 @@ router.route('/:param1/estadisticas')
 		    client.scard("ips", function (err, total){//me traigo la cantidad de elementos de la lista
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 			    	client.get(reply, function (err, cant){
-	                    res.write(" sorted --> " + i + ": " + reply + " : " + cant);
+	                    res.write(" sorted --> " + i + ": " + reply + " : " + cant + "</BR>");
 	                    if(parseInt(total) == (parseInt(i) + 1)){
 	                    	res.end();
 	                    }
