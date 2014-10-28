@@ -162,6 +162,32 @@ router.route('/ips/estadisticas/block')
 		});	
 	});	
 
+router.route('/ips/estadisticas/block')
+	.get(function(req, res) {
+		client.scard("urlsBlock", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay urls bloqueadas' });
+	    	}else{
+				client.sort("urlsBlock","by","*","desc", function (err, replies) {//me traigo las ips bloqueadas
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    res.write(replies.length + " urls:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+		                    res.write(reply + "</BR>");
+		                    if(parseInt(total) == (parseInt(i) + 1)){
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});		
+
 router.route('/:param1/estadisticas')
 	.get(function(req, res) {
 		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
@@ -225,6 +251,89 @@ router.route('/:param1/:param2/:param3/estadisticas')
 	    		res.json({ message: 'No hay estadisticas para mostrar' });
 	    	}else{
 				client.sort("keys","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    //res.write(replies.length + " ips:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3)){ //solo muestro las ips que le pegaron a esa url
+			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+				    		}
+		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});
+
+router.route('/:param1/estadisticas/block')
+	.get(function(req, res) {
+		client.scard("keysBlock", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay bloqueos para mostrar' });
+	    	}else{
+				client.sort("keysBlock","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+				    		if(reply.split(":")[1] == ('/' + req.params.param1)){ //solo muestro las ips que le pegaron a esa url
+			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+				    		}
+		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});
+
+router.route('/:param1/:param2/estadisticas/block')
+	.get(function(req, res) {
+		client.scard("keysBlock", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay bloqueos para mostrar' });
+	    	}else{
+				client.sort("keysBlock","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    //res.write(replies.length + " ips:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2)){ //solo muestro las ips que le pegaron a esa url
+			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+				    		}
+		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});
+
+router.route('/:param1/:param2/:param3/estadisticas/block')
+	.get(function(req, res) {
+		client.scard("keysBlock", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay bloqueos para mostrar' });
+	    	}else{
+				client.sort("keysBlock","by","*","desc", function (err, replies) {//me traigo la lista ordenada
 				    if (err) {
 				        return console.error("error response - " + err);
 				    }
@@ -370,6 +479,11 @@ function noBloqueado(ip, pathname, key){
         if(reply){
         	if(parseInt(reply) >= 5){
             	client.set(keyBlock, 1);
+            	client.sismember("keysBlock", key, function(err, reply){
+					if(reply == "0"){
+						client.sadd("keysBlock", key);
+					}
+				});
             }
         }else{
         	client.set(keyExpire, 0);
@@ -386,6 +500,11 @@ function noBloqueado(ip, pathname, key){
         if(reply){
         	if(parseInt(reply) >= 10){
             	client.set(pathBlock, 1);
+            	client.sismember("urlsBlock", pathname, function(err, reply){
+					if(reply == "0"){
+						client.sadd("urlsBlock", pathname);
+					}
+				});
             }
         }else{
         	client.set(pathnameExpire, 0);
