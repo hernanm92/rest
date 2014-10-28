@@ -424,8 +424,26 @@ function getRequestFunction(req, res, getPath){
 
 }
 
-function expire(){
-
+function expire(block, expire, blockList, time, amount){
+	client.get(expire, function (err, reply) {
+        if(reply){
+            if(parseInt(reply) >= amount){ //lo bloquea a las tantas veces que le pega en determinado tiempo
+            	client.set(block, 1);
+            	client.sismember(blockList, ip, function(err, reply){//guardo la ip en la lista de bloqueados
+					if(reply == "0"){
+						client.sadd(blockList, ip);
+					}
+				});
+            }
+        }else{
+        	client.set(expire, 0);//si no esta setteado se lo vuelvo a settear
+        	client.expire(expire, time);
+        }
+	    client.incr(expire);
+	    /*client.get(expire, function (err, reply) {
+	        console.log('ipExpire: ' + reply);  //hacerlo generico
+	    });*/
+    });
 }
 
 function noBloqueado(ip, pathname, key){
@@ -453,70 +471,14 @@ function noBloqueado(ip, pathname, key){
 	var pathnameExpire = pathname + ':expire';
 	var keyExpire = key + ':expire';
 
-	client.get(ipExpire, function (err, reply) {
-        if(reply){
-            if(parseInt(reply) >= 10){ //lo bloquea a las tantas veces que le pega en determinado tiempo
-            	client.set(ipBlock, 1);
-            	client.sismember("ipsBlock", ip, function(err, reply){//guardo la ip en la lista de bloqueados
-					if(reply == "0"){
-						client.sadd("ipsBlock", ip);
-					}
-				});
-            }
-        }else{
-        	client.set(ipExpire, 0);//si no esta setteado se lo vuelvo a settear
-        	client.expire(ipExpire, 40);
-        }
-	    client.incr(ipExpire);
-	    client.get(ipExpire, function (err, reply) {
-	        console.log('ipExpire: ' + reply);
-	    });
-    });
-
-	client.get(keyExpire, function (err, reply) {
-        if(reply){
-        	if(parseInt(reply) >= 5){ 
-            	client.set(keyBlock, 1);
-            	client.sismember("keysBlock", key, function(err, reply){
-					if(reply == "0"){
-						client.sadd("keysBlock", key);
-					}
-				});
-            }
-        }else{
-        	client.set(keyExpire, 0);
-        	client.expire(keyExpire, 40);
-        }
-	    client.incr(keyExpire);
-	    client.get(keyExpire, function (err, reply) {
-	        console.log('keyExpire: ' + reply);
-	    });    
-    });
-
-    client.get(pathnameExpire, function (err, reply) {
-        if(reply){
-        	if(parseInt(reply) >= 10){
-            	client.set(pathBlock, 1);
-            	client.sismember("urlsBlock", pathname, function(err, reply){
-					if(reply == "0"){
-						client.sadd("urlsBlock", pathname);
-					}
-				});
-            }
-        }else{
-        	client.set(pathnameExpire, 0);
-        	client.expire(pathnameExpire, 40);
-        }
-	    client.incr(pathnameExpire);
-	    client.get(pathnameExpire, function (err, reply) {
-	        console.log('pathnameExpire: ' + reply);
-	    });  
-    });
+	expire(ipBlock, ipExpire, "ipsBlock", 40, 10);
+	expire(keyBlock, keyExpire, "keyssBlock", 40, 5);
+	expire(pathBlock, pathnameExpire, "urlsBlock", 40, 10);
 
     client.incr(key);
     client.incr(ip);
     client.incr(pathname);
-
+/*
     client.get(key, function (err, reply) {
         console.log('key: ' + reply);
     });
@@ -526,6 +488,6 @@ function noBloqueado(ip, pathname, key){
     client.get(pathname, function (err, reply) {
         console.log('url: ' + reply);
     });
-
+*/
 	console.log('Apunto de rutear');
 } 
