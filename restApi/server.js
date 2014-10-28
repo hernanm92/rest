@@ -321,7 +321,7 @@ function noBloqueado(ip, pathname, key){
 	client.get(ipExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
-            if(parseInt(reply) >= 5){ //lo bloquea a las tantas veces que le pega en determinado tiempo
+            if(parseInt(reply) >= 10){ //lo bloquea a las tantas veces que le pega en determinado tiempo
             	client.set(ipBlock, 1);
             }
         }else{
@@ -337,7 +337,7 @@ function noBloqueado(ip, pathname, key){
 	client.get(keyExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
-        	if(parseInt(reply) >= 5){
+        	if(parseInt(reply) >= 10){
             	client.set(keyBlock, 1);
             }
         }else{
@@ -361,9 +361,9 @@ function noBloqueado(ip, pathname, key){
         	client.expire(pathnameExpire, 40);
         }
     });
-    client.incr(keyExpire);
-    client.get(keyExpire, function (err, reply) {
-        console.log('keyExpire: ' + reply);
+    client.incr(pathnameExpire);
+    client.get(pathnameExpire, function (err, reply) {
+        console.log('pathnameExpire: ' + reply);
     });  
 
     client.incr(key);
