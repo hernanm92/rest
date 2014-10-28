@@ -454,7 +454,6 @@ function noBloqueado(ip, pathname, key){
 	var keyExpire = key + ':expire';
 
 	client.get(ipExpire, function (err, reply) {
-		console.log(reply);
         if(reply){
             if(parseInt(reply) >= 10){ //lo bloquea a las tantas veces que le pega en determinado tiempo
             	client.set(ipBlock, 1);
@@ -475,7 +474,6 @@ function noBloqueado(ip, pathname, key){
     });
 
 	client.get(keyExpire, function (err, reply) {
-		console.log(reply);
         if(reply){
         	if(parseInt(reply) >= 5){
             	client.set(keyBlock, 1);
@@ -489,14 +487,13 @@ function noBloqueado(ip, pathname, key){
         	client.set(keyExpire, 1);
         	client.expire(keyExpire, 40);
         }
+	    client.incr(keyExpire);
+	    client.get(keyExpire, function (err, reply) {
+	        console.log('keyExpire: ' + reply);
+	    });    
     });
-    client.incr(keyExpire);
-    client.get(keyExpire, function (err, reply) {
-        console.log('keyExpire: ' + reply);
-    });    
 
     client.get(pathnameExpire, function (err, reply) {
-		console.log(reply);
         if(reply){
         	if(parseInt(reply) >= 10){
             	client.set(pathBlock, 1);
