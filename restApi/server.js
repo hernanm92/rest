@@ -429,9 +429,9 @@ function expire(block, expire, blockList, element, time, amount){
         if(reply){
             if(parseInt(reply) >= amount){ //lo bloquea a las tantas veces que le pega en determinado tiempo
             	client.set(block, 1);
-            	client.sismember(blockList, ip, function(err, reply){//guardo la ip en la lista de bloqueados
+            	client.sismember(blockList, element, function(err, reply){//guardo la ip en la lista de bloqueados
 					if(reply == "0"){
-						client.sadd(blockList, ip);
+						client.sadd(blockList, element);
 					}
 				});
             }
