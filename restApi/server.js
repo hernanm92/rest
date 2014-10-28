@@ -99,6 +99,7 @@ router.route('/:param1/estadisticas')
 		        	//console.log(" sorted --> " + i + ": " + reply + " : " + cant);
 		    	});
 		    });
+		    res.end();
 		});
 		//res.json({ message: 'Voy a mostrar estadisticas' });
 	});
