@@ -97,16 +97,14 @@ router.route('/:param1/estadisticas')
 
 				    res.writeHead(200, {"Content-Type": "text/html"});
 				    res.write(replies.length + " ips:" + "</BR>");
-					    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-					    	client.get(reply, function (err, cant){
-			                    res.write(reply + " : " + cant + "</BR>");
-			                    if(parseInt(total) == (parseInt(i) + 1)){
-			                    	res.end();
-			                    }
-					        	//console.log(" sorted --> " + i + ": " + reply + " : " + cant);
-					    	});
-					    });    
-				    });
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+		                    res.write(reply + " : " + cant + "</BR>");
+		                    if(parseInt(total) == (parseInt(i) + 1)){
+		                    	res.end();
+		                    }
+				    	});
+				    });    
 				});
 	    	}
 		});	
