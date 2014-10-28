@@ -162,7 +162,7 @@ router.route('/ips/estadisticas/block')
 		});	
 	});	
 
-router.route('/ips/estadisticas/block')
+router.route('/urls/estadisticas/block')
 	.get(function(req, res) {
 		client.scard("urlsBlock", function (err, total){//me traigo la cantidad de elementos de la lista
             if(parseInt(total) == 0){
@@ -287,7 +287,7 @@ router.route('/:param1/estadisticas/block')
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
 				    		if(reply.split(":")[1] == ('/' + req.params.param1)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+			                    res.write(reply.split(":")[0] + "</BR>");
 				    		}
 		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
 		                    	res.end();
@@ -315,7 +315,7 @@ router.route('/:param1/:param2/estadisticas/block')
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
 				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+			                    res.write(reply.split(":")[0] + "</BR>");
 				    		}
 		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
 		                    	res.end();
@@ -343,7 +343,7 @@ router.route('/:param1/:param2/:param3/estadisticas/block')
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
 				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+			                    res.write(reply.split(":")[0] + "</BR>");
 				    		}
 		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
 		                    	res.end();
