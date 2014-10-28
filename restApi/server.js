@@ -464,18 +464,18 @@ function noBloqueado(ip, pathname, key){
 				});
             }
         }else{
-        	client.set(ipExpire, 1);//si no esta setteado se lo vuelvo a settear
+        	client.set(ipExpire, 0);//si no esta setteado se lo vuelvo a settear
         	client.expire(ipExpire, 40);
         }
-    });
-    client.incr(ipExpire); //LO ESTA INCREMENTANDO ANTES DE EXPIRAR (PORQUE ES ASINCRONICO)
-    client.get(ipExpire, function (err, reply) {
-        console.log('ipExpire: ' + reply);
+	    client.incr(ipExpire);
+	    client.get(ipExpire, function (err, reply) {
+	        console.log('ipExpire: ' + reply);
+	    });
     });
 
 	client.get(keyExpire, function (err, reply) {
         if(reply){
-        	if(parseInt(reply) >= 5){
+        	if(parseInt(reply) >= 5){ 
             	client.set(keyBlock, 1);
             	client.sismember("keysBlock", key, function(err, reply){
 					if(reply == "0"){
@@ -484,7 +484,7 @@ function noBloqueado(ip, pathname, key){
 				});
             }
         }else{
-        	client.set(keyExpire, 1);
+        	client.set(keyExpire, 0);
         	client.expire(keyExpire, 40);
         }
 	    client.incr(keyExpire);
@@ -504,23 +504,18 @@ function noBloqueado(ip, pathname, key){
 				});
             }
         }else{
-        	client.set(pathnameExpire, 1);
+        	client.set(pathnameExpire, 0);
         	client.expire(pathnameExpire, 40);
         }
+	    client.incr(pathnameExpire);
+	    client.get(pathnameExpire, function (err, reply) {
+	        console.log('pathnameExpire: ' + reply);
+	    });  
     });
-    client.incr(pathnameExpire);
-    client.get(pathnameExpire, function (err, reply) {
-        console.log('pathnameExpire: ' + reply);
-    });  
 
     client.incr(key);
     client.incr(ip);
     client.incr(pathname);
-    //se pueden meter en listas?
-
-    //console.log('key' + client.hget(key, 'contador'));
-    //console.log('ip' + client.hget(ip, 'contador'));
-    //console.log('url' + client.hget(pathname, 'contador'));
 
     client.get(key, function (err, reply) {
         console.log('key: ' + reply);
@@ -532,7 +527,5 @@ function noBloqueado(ip, pathname, key){
         console.log('url: ' + reply);
     });
 
-    //client.zadd(pathname, );
-
-	console.log('Something is happening.');
+	console.log('Apunto de rutear');
 } 
