@@ -110,23 +110,51 @@ router.route('/ips/estadisticas')
 		});	
 	});
 
-router.route('/:param1/estadisticas')
+router.route('/urls/estadisticas')
 	.get(function(req, res) {
-		client.scard("ips", function (err, total){//me traigo la cantidad de elementos de la lista
+		client.scard("urls", function (err, total){//me traigo la cantidad de elementos de la lista
             if(parseInt(total) == 0){
 	    		res.json({ message: 'No hay estadisticas para mostrar' });
 	    	}else{
-				client.sort("ips","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				client.sort("urls","by","*","desc", function (err, replies) {//me traigo la lista ordenada
 				    if (err) {
 				        return console.error("error response - " + err);
 				    }
 
 				    res.writeHead(200, {"Content-Type": "text/html"});
-				    res.write(replies.length + " ips:" + "</BR>");
+				    res.write(replies.length + " urls:" + "</BR>");
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
 		                    res.write(reply + " : " + cant + "</BR>");
 		                    if(parseInt(total) == (parseInt(i) + 1)){
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});	
+
+router.route('/:param1/estadisticas')
+	.get(function(req, res) {
+		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay estadisticas para mostrar' });
+	    	}else{
+				client.sort("keys","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    //res.write(replies.length + " ips:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+				    		if(reply.split(":")[1] == ('/' + req.params.param1)){ //solo muestro las ips que le pegaron a esa url
+			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+				    		}
+		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
 		                    	res.end();
 		                    }
 				    	});
@@ -166,8 +194,31 @@ router.route('/:param1/:param2/estadisticas')
 
 router.route('/:param1/:param2/:param3/estadisticas')
 	.get(function(req, res) {
-		res.json({ message: 'Voy a mostrar estadisticas' });
-	});		
+		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay estadisticas para mostrar' });
+	    	}else{
+				client.sort("keys","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    //res.write(replies.length + " ips:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3)){ //solo muestro las ips que le pegaron a esa url
+			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+				    		}
+		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});
 
 router.route('/:param1')
 	.get(function(req, res) {
@@ -251,6 +302,11 @@ function noBloqueado(ip, pathname, key){
 	client.sismember("keys", key, function(err, reply){
 		if(reply == "0"){
 			client.sadd("keys", key);
+		}
+	});
+	client.sismember("urls", pathname, function(err, reply){
+		if(reply == "0"){
+			client.sadd("urls", pathname);
 		}
 	});
 
