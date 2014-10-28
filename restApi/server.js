@@ -337,7 +337,7 @@ function noBloqueado(ip, pathname, key){
 	client.get(keyExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
-        	if(parseInt(reply) >= 10){
+        	if(parseInt(reply) >= 5){
             	client.set(keyBlock, 1);
             }
         }else{
@@ -353,7 +353,7 @@ function noBloqueado(ip, pathname, key){
     client.get(pathnameExpire, function (err, reply) {
 		console.log(reply);
         if(reply){
-        	if(parseInt(reply) >= 5){
+        	if(parseInt(reply) >= 10){
             	client.set(pathBlock, 1);
             }
         }else{
