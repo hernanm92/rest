@@ -84,6 +84,32 @@ router.get('/', function(req, res) {
 
 // rutas para pegarle a la api
 // ----------------------------------------------------
+router.route('/ips/estadisticas')
+	.get(function(req, res) {
+		client.scard("ips", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay estadisticas para mostrar' });
+	    	}else{
+				client.sort("ips","by","*","desc", function (err, replies) {//me traigo la lista ordenada
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    res.write(replies.length + " ips:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+		                    res.write(reply + " : " + cant + "</BR>");
+		                    if(parseInt(total) == (parseInt(i) + 1)){
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});
+
 router.route('/:param1/estadisticas')
 	.get(function(req, res) {
 		client.scard("ips", function (err, total){//me traigo la cantidad de elementos de la lista
@@ -126,7 +152,7 @@ router.route('/:param1/:param2/estadisticas')
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
 				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2)){ //solo muestro las ips que le pegaron a esa url
-			                    res.write(reply + " : " + cant + "</BR>");
+			                    res.write(reply.split(":")[0] + " : " + cant + "</BR>");
 				    		}
 		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
 		                    	res.end();
