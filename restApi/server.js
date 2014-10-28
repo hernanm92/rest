@@ -424,7 +424,7 @@ function getRequestFunction(req, res, getPath){
 
 }
 
-function expire(block, expire, blockList, time, amount){
+function expire(block, expire, blockList, element, time, amount){
 	client.get(expire, function (err, reply) {
         if(reply){
             if(parseInt(reply) >= amount){ //lo bloquea a las tantas veces que le pega en determinado tiempo
@@ -471,9 +471,9 @@ function noBloqueado(ip, pathname, key){
 	var pathnameExpire = pathname + ':expire';
 	var keyExpire = key + ':expire';
 
-	expire(ipBlock, ipExpire, "ipsBlock", 40, 10);
-	expire(keyBlock, keyExpire, "keyssBlock", 40, 5);
-	expire(pathBlock, pathnameExpire, "urlsBlock", 40, 10);
+	expire(ipBlock, ipExpire, "ipsBlock", ip, 40, 10);
+	expire(keyBlock, keyExpire, "keyssBlock", key, 40, 5);
+	expire(pathBlock, pathnameExpire, "urlsBlock", pathname, 40, 10);
 
     client.incr(key);
     client.incr(ip);
