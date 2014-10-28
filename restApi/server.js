@@ -122,11 +122,13 @@ router.route('/:param1/:param2/estadisticas')
 				    }
 
 				    res.writeHead(200, {"Content-Type": "text/html"});
-				    res.write(replies.length + " ips:" + "</BR>");
+				    //res.write(replies.length + " ips:" + "</BR>");
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
-		                    res.write(reply + " : " + cant + "</BR>");
-		                    if(parseInt(total) == (parseInt(i) + 1)){
+				    		if(reply.split(":")[1] == ('/' + req.params.param1 + '/' + req.params.param2)){ //solo muestro las ips que le pegaron a esa url
+			                    res.write(reply + " : " + cant + "</BR>");
+				    		}
+		                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
 		                    	res.end();
 		                    }
 				    	});
