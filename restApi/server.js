@@ -291,7 +291,13 @@ router.route('/:param1/:param2/:param3')
 	.get(function(req, res) {
 		var getPath = '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3;
 		getRequestFunction(req, res, getPath);
-	});		
+	});	
+
+router.route('/:param1/:param2/:param3/:param4')
+	.get(function(req, res) {
+		var getPath = '/' + req.params.param1 + '/' + req.params.param2 + '/' + req.params.param3 + '/' + req.params.param4;
+		getRequestFunction(req, res, getPath);
+	});			
 
 // todas las rutas van a arrancar con /api
 app.use('/api', router);
@@ -351,7 +357,7 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			    }
 
 			    res.writeHead(200, {"Content-Type": "text/html"});
-			    res.write(replies.length + shown + ":" + "</BR>");
+			    res.write(replies.length + ' ' + shown + ":" + "</BR>");
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 			    	client.get(reply, function (err, cant){
 			    		if(block){
