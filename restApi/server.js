@@ -86,107 +86,23 @@ router.get('/', function(req, res) {
 // ----------------------------------------------------
 router.route('/ips/estadisticas')
 	.get(function(req, res) {
-		client.scard("ips", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay estadisticas para mostrar' });
-	    	}else{
-				client.sort("ips","by","*","desc", function (err, replies) {//me traigo la lista ordenada
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
-
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    res.write(replies.length + " ips:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-		                    res.write(reply + " : " + cant + "</BR>");
-		                    if(parseInt(total) == (parseInt(i) + 1)){
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
-	});
+        urlStaticStadistics("ips", "ips", 'No hay estadisticas para mostrar', res, 0);
+    });    
 
 router.route('/urls/estadisticas')
 	.get(function(req, res) {
-		client.scard("urls", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay estadisticas para mostrar' });
-	    	}else{
-				client.sort("urls","by","*","desc", function (err, replies) {//me traigo la lista ordenada
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
-
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    res.write(replies.length + " urls:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-		                    res.write(reply + " : " + cant + "</BR>");
-		                    if(parseInt(total) == (parseInt(i) + 1)){
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
-	});	
+        urlStaticStadistics("urls", "urls", 'No hay estadisticas para mostrar', res, 0);
+    }); 
 
 router.route('/ips/estadisticas/block')
 	.get(function(req, res) {
-		client.scard("ipsBlock", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay ips bloqueadas' });
-	    	}else{
-				client.sort("ipsBlock","by","*","desc", function (err, replies) {//me traigo las ips bloqueadas
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
-
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    res.write(replies.length + " ips:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-		                    res.write(reply + "</BR>");
-		                    if(parseInt(total) == (parseInt(i) + 1)){
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
-	});	
+        urlStaticStadistics("ipsBlock", "ips", 'No hay ips bloqueadas', res, 1);
+    }); 
 
 router.route('/urls/estadisticas/block')
 	.get(function(req, res) {
-		client.scard("urlsBlock", function (err, total){//me traigo la cantidad de elementos de la lista
-            if(parseInt(total) == 0){
-	    		res.json({ message: 'No hay urls bloqueadas' });
-	    	}else{
-				client.sort("urlsBlock","by","*","desc", function (err, replies) {//me traigo las ips bloqueadas
-				    if (err) {
-				        return console.error("error response - " + err);
-				    }
-
-				    res.writeHead(200, {"Content-Type": "text/html"});
-				    res.write(replies.length + " urls:" + "</BR>");
-				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-				    	client.get(reply, function (err, cant){
-		                    res.write(reply + "</BR>");
-		                    if(parseInt(total) == (parseInt(i) + 1)){
-		                    	res.end();
-		                    }
-				    	});
-				    });    
-				});
-	    	}
-		});	
-	});		
+        urlStaticStadistics("urlsBlock", "urls", 'No hay urls bloqueadas', res, 1);
+    });             
 
 router.route('/:param1/estadisticas')
 	.get(function(req, res) {
@@ -424,12 +340,45 @@ function getRequestFunction(req, res, getPath){
 
 }
 
+function urlStaticStadistics(list, shown, defaultMessage, res , block){
+	client.scard(list, function (err, total){//me traigo la cantidad de elementos de la lista
+        if(parseInt(total) == 0){
+    		res.json({ message: defaultMessage });
+    	}else{
+			client.sort(list,"by","*","desc", function (err, replies) {//me traigo la lista ordenada
+			    if (err) {
+			        return console.error("error response - " + err);
+			    }
+
+			    res.writeHead(200, {"Content-Type": "text/html"});
+			    res.write(replies.length + shown + ":" + "</BR>");
+			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+			    	client.get(reply, function (err, cant){
+			    		if(block){
+			    			res.write(reply + "</BR>");
+			    		}else{
+	                    	res.write(reply + " : " + cant + "</BR>");
+			    		}
+	                    if(parseInt(total) == (parseInt(i) + 1)){
+	                    	res.end();
+	                    }
+			    	});
+			    });    
+			});
+    	}
+	});
+}
+
+function urlDinamicStadistics(){
+
+}
+
 function expire(block, expire, blockList, element, time, amount){
 	client.get(expire, function (err, reply) {
         if(reply){
             if(parseInt(reply) >= amount){ //lo bloquea a las tantas veces que le pega en determinado tiempo
             	client.set(block, 1);
-            	client.sismember(blockList, element, function(err, reply){//guardo la ip en la lista de bloqueados
+            	client.sismember(blockList, element, function(err, reply){//guardo el elemento (ej: ip) en la lista de bloqueados
 					if(reply == "0"){
 						client.sadd(blockList, element);
 					}
