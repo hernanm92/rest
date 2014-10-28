@@ -151,7 +151,7 @@ router.route('/ips/estadisticas/block')
 				    res.write(replies.length + " ips:" + "</BR>");
 				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 				    	client.get(reply, function (err, cant){
-		                    res.write(reply + " : " + cant + "</BR>");
+		                    res.write(reply + "</BR>");
 		                    if(parseInt(total) == (parseInt(i) + 1)){
 		                    	res.end();
 		                    }
