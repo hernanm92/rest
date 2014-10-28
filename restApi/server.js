@@ -136,6 +136,32 @@ router.route('/urls/estadisticas')
 		});	
 	});	
 
+router.route('/ips/estadisticas/block')
+	.get(function(req, res) {
+		client.scard("ipsBlock", function (err, total){//me traigo la cantidad de elementos de la lista
+            if(parseInt(total) == 0){
+	    		res.json({ message: 'No hay ips bloqueadas' });
+	    	}else{
+				client.sort("ipsBlock","by","*","desc", function (err, replies) {//me traigo las ips bloqueadas
+				    if (err) {
+				        return console.error("error response - " + err);
+				    }
+
+				    res.writeHead(200, {"Content-Type": "text/html"});
+				    res.write(replies.length + " ips:" + "</BR>");
+				    replies.forEach(function (reply, i) {//recorro los elementos de la lista
+				    	client.get(reply, function (err, cant){
+		                    res.write(reply + " : " + cant + "</BR>");
+		                    if(parseInt(total) == (parseInt(i) + 1)){
+		                    	res.end();
+		                    }
+				    	});
+				    });    
+				});
+	    	}
+		});	
+	});	
+
 router.route('/:param1/estadisticas')
 	.get(function(req, res) {
 		client.scard("keys", function (err, total){//me traigo la cantidad de elementos de la lista
@@ -323,6 +349,11 @@ function noBloqueado(ip, pathname, key){
         if(reply){
             if(parseInt(reply) >= 10){ //lo bloquea a las tantas veces que le pega en determinado tiempo
             	client.set(ipBlock, 1);
+            	client.sismember("ipsBlock", ip, function(err, reply){//guardo la ip en la lista de bloqueados
+					if(reply == "0"){
+						client.sadd("ipsBlock", ip);
+					}
+				});
             }
         }else{
         	client.set(ipExpire, 0);
