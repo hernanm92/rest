@@ -89,6 +89,7 @@ router.route('/block/:ip')
 		var ipBlock = req.params.ip + ':block';
 		client.set(ipBlock, 1);
         client.sadd("ipsBlock", req.params.ip);
+        res.json({ message: req.params.ip + 'has been block'});
     });    
 
 router.route('/ips/estadisticas')
