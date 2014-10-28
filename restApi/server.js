@@ -421,7 +421,7 @@ function noBloqueado(ip, pathname, key){
 	var keyExpire = key + ':expire';
 
 	expire(ipBlock, ipExpire, "ipsBlock", ip, 40, 10);
-	expire(keyBlock, keyExpire, "keyssBlock", key, 40, 5);
+	expire(keyBlock, keyExpire, "keysBlock", key, 40, 5);
 	expire(pathBlock, pathnameExpire, "urlsBlock", pathname, 40, 10);
 
     client.incr(key);
