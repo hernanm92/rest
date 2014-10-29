@@ -103,6 +103,8 @@ router.route('/block/:ip')
 
 router.route('/expires/ip/:amount/:time')
 	.post(function(req, res) {
+		ipAmount = parseInt(req.params.amount);
+		ipTime = parseInt(req.params.time);
 		client.set("ipAmount", req.params.amount);
 		client.set("ipTime", req.params.time);
         res.json({ message: 'ip amount and time has been set'});
@@ -110,6 +112,8 @@ router.route('/expires/ip/:amount/:time')
 
 router.route('/expires/url/:amount/:time')
 	.post(function(req, res) {
+		urlAmount = parseInt(req.params.amount);
+		urlTime = parseInt(req.params.time);
 		client.set("urlAmount", req.params.amount);
 		client.set("urlTime", req.params.time);
         res.json({ message: 'url amount and time has been set'});
@@ -117,6 +121,8 @@ router.route('/expires/url/:amount/:time')
 
 router.route('/expires/key/:amount/:time')
 	.post(function(req, res) {
+		keyAmount = parseInt(req.params.amount);
+		keyTime = parseInt(req.params.time);
 		client.set("keyAmount", req.params.amount);
 		client.set("keyTime", req.params.time);
         res.json({ message: 'key amount and time has been set'});
