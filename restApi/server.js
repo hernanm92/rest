@@ -26,12 +26,12 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080; //puerto de escucha
 
-var ipAmount;
-var ipTime;
-var urlAmount;
-var urlTime;
-var keyAmount;
-var keyTime;
+var ipAmount = 10;//setteo estos valores por defecto, en caso de que no haya otros
+var ipTime = 40;
+var urlAmount = 10;
+var urlTime = 40;
+var keyAmount = 5;
+var keyTime = 40;
 
 setConfigurarionVariables();
 
@@ -99,7 +99,16 @@ router.route('/block/:ip')
 		client.set(ipBlock, 1);
         client.sadd("ipsBlock", req.params.ip);
         res.json({ message: req.params.ip + 'has been block'});
-    });    
+    })
+    .get(function(req, res){
+    	client.sismember("ipsBlock", req.params.ip, function(err, reply){
+    		if (reply == '1') {
+    			res.json({ message: 'this ip is block'});
+    		}else{
+    			res.json({ message: "this ip isn't block"});
+    		}
+    	});
+    }); 
 
 router.route('/expires/ip/:amount/:time')
 	.post(function(req, res) {
@@ -239,22 +248,34 @@ function getRequestIP(request){
 
 function setConfigurarionVariables(){
 	client.get("ipAmount", function (err, reply){
-       ipAmount = parseInt(reply);
+		if(reply){	
+        	ipAmount = parseInt(reply);
+		}
 	});
 	client.get("ipTime", function (err, reply){
-       ipTime = parseInt(reply);
+		if(reply){
+        	ipTime = parseInt(reply);
+        }
 	});
 	client.get("urlAmount", function (err, reply){
-       urlAmount = parseInt(reply);
+		if(reply){
+        	urlAmount = parseInt(reply);
+        }
 	});
 	client.get("urlTime", function (err, reply){
-       urlTime = parseInt(reply);
+		if(reply){
+        	urlTime = parseInt(reply);
+        }
 	});
 	client.get("keyAmount", function (err, reply){
-       keyAmount = parseInt(reply);
+		if(reply){
+        	keyAmount = parseInt(reply);
+        }
 	});
 	client.get("keyTime", function (err, reply){
-       keyTime = parseInt(reply);
+		if(reply){
+        	keyTime = parseInt(reply);
+        }
 	});
 }
 
