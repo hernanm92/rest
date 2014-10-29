@@ -26,6 +26,15 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 8080; //puerto de escucha
 
+var ipAmount;
+var ipTime;
+var urlAmount;
+var urlTime;
+var keyAmount;
+var keyTime;
+
+setConfigurarionVariables();
+
 // RUTAS
 // =============================================================================
 var router = express.Router(); // instancia del router express
@@ -91,6 +100,11 @@ router.route('/block/:ip')
         client.sadd("ipsBlock", req.params.ip);
         res.json({ message: req.params.ip + 'has been block'});
     });    
+
+router.route('/expires/ip/:amount/:time')
+	.post(function(req, res) {
+        res.json({ message: 'expire time has been set'});
+    });      
 
 router.route('/ips/estadisticas')
 	.get(function(req, res) {
@@ -199,6 +213,27 @@ console.log('Listening on port ' + port);
 function getRequestIP(request){
   return (request.headers['x-forwarded-for'] || '').split(',')[0] 
         || request.connection.remoteAddress;
+}
+
+function setConfigurarionVariables(){
+	client.get("ipAmount", function (err, reply){
+       ipAmount = parseInt(reply);
+	});
+	client.get("ipTime", function (err, reply){
+       ipTime = parseInt(reply);
+	});
+	client.get("urlAmount", function (err, reply){
+       urlAmount = parseInt(reply);
+	});
+	client.get("urlTime", function (err, reply){
+       urlTime = parseInt(reply);
+	});
+	client.get("keyAmount", function (err, reply){
+       keyAmount = parseInt(reply);
+	});
+	client.get("keyTime", function (err, reply){
+       keyTime = parseInt(reply);
+	});
 }
 
 function getRequestFunction(req, res, getPath){
