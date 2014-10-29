@@ -103,8 +103,24 @@ router.route('/block/:ip')
 
 router.route('/expires/ip/:amount/:time')
 	.post(function(req, res) {
-        res.json({ message: 'expire time has been set'});
-    });      
+		client.set("ipAmount", req.params.amount);
+		client.set("ipTime", req.params.time);
+        res.json({ message: 'ip amount and time has been set'});
+    });  
+
+router.route('/expires/url/:amount/:time')
+	.post(function(req, res) {
+		client.set("urlAmount", req.params.amount);
+		client.set("urlTime", req.params.time);
+        res.json({ message: 'url amount and time has been set'});
+    });    
+
+router.route('/expires/key/:amount/:time')
+	.post(function(req, res) {
+		client.set("keyAmount", req.params.amount);
+		client.set("keyTime", req.params.time);
+        res.json({ message: 'key amount and time has been set'});
+    });            
 
 router.route('/ips/estadisticas')
 	.get(function(req, res) {
