@@ -380,9 +380,9 @@ function noBloqueado(ip, pathname, key){
 	var pathnameExpire = pathname + ':expire';
 	var keyExpire = key + ':expire';
 
-	expire(ipBlock, ipExpire, "ipsBlock", ip, 40, 10);
-	expire(keyBlock, keyExpire, "keysBlock", key, 40, 5);
-	expire(pathBlock, pathnameExpire, "urlsBlock", pathname, 40, 10);
+	expire(ipBlock, ipExpire, "ipsBlock", ip, ipTime, ipAmount);
+	expire(keyBlock, keyExpire, "keysBlock", key, keyTime, keyAmount);
+	expire(pathBlock, pathnameExpire, "urlsBlock", pathname, urlTime, urlAmount);
 
     client.incr(key);
     client.incr(ip);
