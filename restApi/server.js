@@ -343,7 +343,7 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			    		}
 	                    if(parseInt(total) == (parseInt(i) + 1)){
 	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
-	                    	jsonResponse += ']}'
+	                    	jsonResponse += ']}';
 	                    	res.send(JSON.parse(jsonResponse));
 	                    }
 			    	});
