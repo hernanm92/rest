@@ -330,7 +330,6 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			        return console.error("error response - " + err);
 			    }
 
-			    res.writeHead(200, {"Content-Type": "text/html"});
 			    jsonResponse += ('cantidad: ' + replies.length + ', listado: [');
 			    //res.write(replies.length + ' ' + shown + ":" + "</BR>");
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
@@ -346,7 +345,6 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
 	                    	jsonResponse += ']}'
 	                    	res.send(JSON.parse(jsonResponse));
-	                    	res.end();
 	                    }
 			    	});
 			    });    
