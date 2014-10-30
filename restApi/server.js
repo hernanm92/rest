@@ -359,7 +359,7 @@ function urlDinamicStadistics(list, res , block, url){
     			res.json({ message: 'No hay estadisticas para mostrar' });
         	}
     	}else{
-    		var jsonResponse = '{';
+    		var jsonResponse = '{"listado": ';
 			client.sort(list,"by","*","desc", function (err, replies) {//me traigo la lista ordenada
 			    if (err) {
 			        return console.error("error response - " + err);
