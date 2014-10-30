@@ -330,7 +330,7 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			        return console.error("error response - " + err);
 			    }
 
-			    jsonResponse += ('"cantidad": ' + replies.length + ', "listado": [');
+			    jsonResponse += ('"total": ' + replies.length + ', "listado": [');
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 			    	client.get(reply, function (err, cant){
 			    		if(block){
@@ -359,23 +359,28 @@ function urlDinamicStadistics(list, res , block, url){
     			res.json({ message: 'No hay estadisticas para mostrar' });
         	}
     	}else{
+    		var jsonResponse = '{';
 			client.sort(list,"by","*","desc", function (err, replies) {//me traigo la lista ordenada
 			    if (err) {
 			        return console.error("error response - " + err);
 			    }
 
-			    res.writeHead(200, {"Content-Type": "text/html"});
+			    //res.writeHead(200, {"Content-Type": "text/html"});
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 			    	client.get(reply, function (err, cant){
 			    		if(reply.split(":")[1] == url){ //solo muestro las ips que le pegaron a esa url
 			    			if(block){
-			    				res.write(reply.split(":")[0] + "</BR>");
+			    				//res.write(reply.split(":")[0] + "</BR>");
+			    				jsonResponse += '"' + reply.split(":")[0] + '"' + ',';
 			    			}else{
-		                    	res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+		                    	//res.write(reply.split(":")[0] + " : " + cant + "</BR>");
+		                    	jsonResponse += '{"ip": "' + reply.split(":")[0] + '", "cantidad": ' + cant + '},';
 			    			}
 			    		}
 	                    if(parseInt(total) == (parseInt(i) + 1)){ //lo pongo afuera, por si la ultima key no la tenia que mostrar
-	                    	res.end();
+	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
+	                    	jsonResponse += '}';
+	                    	res.send(JSON.parse(jsonResponse));
 	                    }
 			    	});
 			    });    
