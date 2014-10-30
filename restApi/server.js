@@ -339,13 +339,13 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			    			jsonResponse += reply + ',';
 			    			//res.write(reply + "</BR>");
 			    		}else{
-			    			jsonResponse += reply + '{ip: ' + reply + ', cantidad: ' + cant + '},';
+			    			jsonResponse += '{ip: ' + reply + ', cantidad: ' + cant + '},';
 	                    	//res.write(reply + " : " + cant + "</BR>");
 			    		}
 	                    if(parseInt(total) == (parseInt(i) + 1)){
 	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
 	                    	jsonResponse += ']}'
-	                    	console.log(jsonResponse);
+	                    	res.send(JSON.parse(jsonResponse));
 	                    	res.end();
 	                    }
 			    	});
