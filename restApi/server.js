@@ -139,22 +139,22 @@ router.route('/expires/key/:amount/:time')
 
 router.route('/ips/estadisticas')
 	.get(function(req, res) {
-        urlStaticStadistics("ips", "ips", 'No hay estadisticas para mostrar', res, 0);
+        urlStaticStadistics("ips", "ip", 'No hay estadisticas para mostrar', res, 0);
     });    
 
 router.route('/urls/estadisticas')
 	.get(function(req, res) {
-        urlStaticStadistics("urls", "urls", 'No hay estadisticas para mostrar', res, 0);
+        urlStaticStadistics("urls", "url", 'No hay estadisticas para mostrar', res, 0);
     }); 
 
 router.route('/ips/estadisticas/block')
 	.get(function(req, res) {
-        urlStaticStadistics("ipsBlock", "ips", 'No hay ips bloqueadas', res, 1);
+        urlStaticStadistics("ipsBlock", "ip", 'No hay ips bloqueadas', res, 1);
     }); 
 
 router.route('/urls/estadisticas/block')
 	.get(function(req, res) {
-        urlStaticStadistics("urlsBlock", "urls", 'No hay urls bloqueadas', res, 1);
+        urlStaticStadistics("urlsBlock", "url", 'No hay urls bloqueadas', res, 1);
     });    
       
 router.route('/:param1/estadisticas')
@@ -331,15 +331,12 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			    }
 
 			    jsonResponse += ('"cantidad": ' + replies.length + ', "listado": [');
-			    //res.write(replies.length + ' ' + shown + ":" + "</BR>");
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-			    	client.get(reply, function (err, cant){//NO DEBE ESTAR MOSTRANDO TODOS POR UN TEMA DE SINCRONISMO, PONER EVENTO ON END
+			    	client.get(reply, function (err, cant){
 			    		if(block){
 			    			jsonResponse += '"' + reply + '"' + ',';
-			    			//res.write(reply + "</BR>");
 			    		}else{
-			    			jsonResponse += '{"ip": "' + reply + '", "cantidad": ' + cant + '},';
-	                    	//res.write(reply + " : " + cant + "</BR>");
+			    			jsonResponse += '{"' + shown + '": "' + reply + '", "cantidad": ' + cant + '},';
 			    		}
 	                    if(parseInt(total) == (parseInt(i) + 1)){
 	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
