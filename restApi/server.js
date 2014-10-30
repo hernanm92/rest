@@ -302,7 +302,8 @@ function getRequestFunction(req, res, getPath){
 	  	if(parseInt(response.statusCode) == 200){
 	    	res.send(JSON.parse(info));
 	  	}else{
-	  		res.writeHead(parseInt(response.statusCode), {"Content-Type": "text/html"});
+	  		res.writeHead(200, {"Content-Type": "text/html"});
+            res.write("{ message: 'this resourse was not found in MercadoLibre's api' }");
             res.end();
 	  	}
 	  });
