@@ -302,7 +302,8 @@ function getRequestFunction(req, res, getPath){
 	  	if(parseInt(response.statusCode) == 200){
 	    	res.send(JSON.parse(info));
 	  	}else{
-	  		res.json({ message: '404 not found' });
+	  		res.writeHead(parseInt(response.statusCode), {"Content-Type": "text/html"});
+            res.end();
 	  	}
 	  });
 	  response.on('error', function(error){
