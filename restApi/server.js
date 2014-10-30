@@ -299,7 +299,11 @@ function getRequestFunction(req, res, getPath){
 	    info += data;
 	  });
 	  response.on('end', function(){
-	    res.send(JSON.parse(info));
+	  	if(parseInt(response.statusCode) == 200){
+	    	res.send(JSON.parse(info));
+	  	}else{
+	  		res.json({ message: '404 not found' });
+	  	}
 	  });
 	  response.on('error', function(error){
 	    console.error(error);
