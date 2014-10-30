@@ -335,17 +335,16 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 			    	client.get(reply, function (err, cant){//NO DEBE ESTAR MOSTRANDO TODOS POR UN TEMA DE SINCRONISMO, PONER EVENTO ON END
 			    		if(block){
-			    			jsonResponse += reply + ',';
+			    			jsonResponse += '"' + reply + '"' + ',';
 			    			//res.write(reply + "</BR>");
 			    		}else{
-			    			jsonResponse += '{"ip": ' + reply + ', "cantidad": ' + cant + '},';
+			    			jsonResponse += '{"ip": "' + reply + '", "cantidad": ' + cant + '},';
 	                    	//res.write(reply + " : " + cant + "</BR>");
 			    		}
 	                    if(parseInt(total) == (parseInt(i) + 1)){
 	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
 	                    	jsonResponse += ']}';
-	                    	console.log(jsonResponse);
-	                    	res.send("prueba");
+	                    	res.send(JSON.parse(jsonResponse));
 	                    }
 			    	});
 			    });    
