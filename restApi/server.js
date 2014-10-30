@@ -324,21 +324,28 @@ function urlStaticStadistics(list, shown, defaultMessage, res , block){
         if(parseInt(total) == 0){
     		res.json({ message: defaultMessage });
     	}else{
+    		var jsonResponse = '{';
 			client.sort(list,"by","*","desc", function (err, replies) {//me traigo la lista ordenada
 			    if (err) {
 			        return console.error("error response - " + err);
 			    }
 
 			    res.writeHead(200, {"Content-Type": "text/html"});
-			    res.write(replies.length + ' ' + shown + ":" + "</BR>");
+			    jsonResponse += ('cantidad: ' + replies.length + ', listado: [');
+			    //res.write(replies.length + ' ' + shown + ":" + "</BR>");
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
-			    	client.get(reply, function (err, cant){
+			    	client.get(reply, function (err, cant){//NO DEBE ESTAR MOSTRANDO TODOS POR UN TEMA DE SINCRONISMO, PONER EVENTO ON END
 			    		if(block){
-			    			res.write(reply + "</BR>");
+			    			jsonResponse += reply + ',';
+			    			//res.write(reply + "</BR>");
 			    		}else{
-	                    	res.write(reply + " : " + cant + "</BR>");
+			    			jsonResponse += reply + '{ip: ' + reply + ', cantidad: ' + cant + '},';
+	                    	//res.write(reply + " : " + cant + "</BR>");
 			    		}
 	                    if(parseInt(total) == (parseInt(i) + 1)){
+	                    	jsonResponse = jsonResponse.substring(0, jsonResponse.length-1);
+	                    	jsonResponse += ']}'
+	                    	console.log(jsonResponse);
 	                    	res.end();
 	                    }
 			    	});
