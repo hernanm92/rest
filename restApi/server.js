@@ -88,7 +88,6 @@ router.use(function(req, res, next) {
 
 router.get('/', function(req, res) {
 	res.json({ message: 'Welcome to MELI-PROXY' });
-        res.write("MELI-PROXY");	
 });
 
 // rutas para pegarle a la api
@@ -365,15 +364,12 @@ function urlDinamicStadistics(list, res , block, url){
 			        return console.error("error response - " + err);
 			    }
 
-			    //res.writeHead(200, {"Content-Type": "text/html"});
 			    replies.forEach(function (reply, i) {//recorro los elementos de la lista
 			    	client.get(reply, function (err, cant){
 			    		if(reply.split(":")[1] == url){ //solo muestro las ips que le pegaron a esa url
 			    			if(block){
-			    				//res.write(reply.split(":")[0] + "</BR>");
 			    				jsonResponse += '"' + reply.split(":")[0] + '"' + ',';
 			    			}else{
-		                    	//res.write(reply.split(":")[0] + " : " + cant + "</BR>");
 		                    	jsonResponse += '{"ip": "' + reply.split(":")[0] + '", "cantidad": ' + cant + '},';
 			    			}
 			    		}
